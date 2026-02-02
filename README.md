@@ -12,7 +12,7 @@
 
 | Principle               | Description                           |
 | ----------------------- | ------------------------------------- |
-| **Determinism**         | Same inputs â†’ Same outputs. Always.   |
+| **Determinism**         | Same inputs → Same outputs. Always.   |
 | **Zero IO in Core**     | No database, no network in processing |
 | **Per-Key Isolation**   | Each key has independent state        |
 | **You Own Persistence** | You store. We compute.                |
@@ -35,7 +35,7 @@
 
 ---
 
-## âœ¨ What is this?
+## ✨ What is this?
 
 **Orbit Ledger** is a **high-performance, deterministic in-memory ledger engine** designed to safely handle **debit / credit / balance mutations** under **high concurrency**.
 
@@ -45,10 +45,10 @@ Built on **LMAX Disruptor** for lock-free, mechanical sympathy.
 
 | Guarantee                         | Description                                   |
 | --------------------------------- | --------------------------------------------- |
-| ðŸ”¢ **Deterministic ordering**     | Per-account event sequencing                  |
-| âœ… **Correct balance transitions** | No race conditions, no lost updates           |
-| âš¡ **Zero DB locking**            | Database is never in the hot path             |
-| ðŸ“¦ **Unified Output**             | History + Balance Delta in one atomic payload |
+| 🔢 **Deterministic ordering**     | Per-account event sequencing                  |
+| ✅ **Correct balance transitions** | No race conditions, no lost updates           |
+| ⚡ **Zero DB locking**            | Database is never in the hot path             |
+| 📦 **Unified Output**             | History + Balance Delta in one atomic payload |
 
 ### How it works:
 
@@ -66,11 +66,11 @@ You receive (via onRelease):
 ```
 
 **Orbit Ledger does NOT touch your database.**
-It emits **immutable balance deltas** â€” you decide how and when to persist them.
+It emits **immutable balance deltas** — you decide how and when to persist them.
 
 ---
 
-## ðŸ¤” Why use this?
+## 🤔 Why use this?
 
 ### The Problem: 1000 Transactions = 1000 DB Calls
 
@@ -78,13 +78,13 @@ It emits **immutable balance deltas** â€” you decide how and when to persis
 TRADITIONAL                              Orbit
 â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 â”‚ Transaction 1                â”‚        â”‚                              â”‚
-â”‚   SELECT FOR UPDATE ðŸ”’       â”‚        â”‚  1000 Transactions           â”‚
-â”‚   UPDATE balance             â”‚        â”‚      â†“                       â”‚
-â”‚   INSERT history             â”‚        â”‚  Ring Buffer (in-memory)     â”‚
-â”‚   COMMIT                     â”‚        â”‚      â†“                       â”‚
+│   SELECT FOR UPDATE 🔒       │        │  1000 Transactions           │
+│   UPDATE balance             │        │      ↓                       │
+│   INSERT history             │        │  Ring Buffer (in-memory)     │
+│   COMMIT                     │        │      ↓                       │
 â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤        â”‚  1 Batch Release             â”‚
-â”‚ Transaction 2                â”‚        â”‚      â†“                       â”‚
-â”‚   SELECT FOR UPDATE ðŸ”’       â”‚   VS  â”‚  1 UPDATE balance            â”‚
+│ Transaction 2                │        │      ↓                       │
+│   SELECT FOR UPDATE 🔒       │   VS  │  1 UPDATE balance            │
 â”‚   UPDATE balance             â”‚        â”‚  1 INSERT (batch 1000 rows)  â”‚
 â”‚   INSERT history             â”‚        â”‚                              â”‚
 â”‚   COMMIT                     â”‚        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
@@ -101,10 +101,10 @@ TRADITIONAL                              Orbit
 | Metric                | Traditional (1000 tx) | Orbit (1000 tx)       | Improvement       |
 | --------------------- | --------------------- | --------------------- | ----------------- |
 | **DB Calls**          | 3,000 (3 per tx)      | **2** (1 batch)       | **1500x fewer**   |
-| **DB Locks**          | 1,000 locks           | **0**                 | **âˆž**             |
-| **SELECT FOR UPDATE** | 1,000 queries         | **0**                 | **âˆž**             |
+| **DB Locks**          | 1,000 locks           | **0**                 | **∞**             |
+| **SELECT FOR UPDATE** | 1,000 queries         | **0**                 | **∞**             |
 | **Throughput**        | ~10K ops/sec          | **>1M ops/sec**       | **100x faster**   |
-| **Latency (p99)**     | 10-100ms              | **<1Î¼s**              | **10,000x lower** |
+| **Latency (p99)**     | 10-100ms              | **<1μs**              | **10,000x lower** |
 
 ### How it works
 
@@ -130,27 +130,27 @@ Your DB work:
 | âŒ Problem              | Impact                    |
 | ----------------------- | ------------------------- |
 | SELECT FOR UPDATE       | Blocks other transactions |
-| ðŸ”’ ROW LOCKED           | Threads waiting in queue  |
+| 🔒 ROW LOCKED           | Threads waiting in queue  |
 | â³ Thread waiting       | High latency              |
 | â³ Thread waiting       | Reduced throughput        |
 | âŒ Deadlock risk        | System instability        |
 
 ### Orbit Architecture (Fast)
 
-| âœ… Feature              | Benefit                   |
+| ✅ Feature              | Benefit                   |
 | ----------------------- | ------------------------- |
 | Ring Buffer (Lock-Free) | No contention             |
-| âœ… No locks             | Zero wait time            |
-| âœ… Millions ops/sec     | Extreme throughput        |
-| âœ… Deterministic        | Predictable behavior      |
-| âœ… Batched DB writes    | Minimal I/O overhead      |
+| ✅ No locks             | Zero wait time            |
+| ✅ Millions ops/sec     | Extreme throughput        |
+| ✅ Deterministic        | Predictable behavior      |
+| ✅ Batched DB writes    | Minimal I/O overhead      |
 
 **Orbit Ledger does NOT touch your database during processing.**
-It emits **immutable balance deltas** â€” you decide how and when to persist them.
+It emits **immutable balance deltas** — you decide how and when to persist them.
 
 ---
 
-## ðŸš€ Quick Start
+## 🚀 Quick Start
 
 ### 1. Add Dependency
 
@@ -183,12 +183,12 @@ Orbit.debit("ACC-001", 30_000);
 Orbit.credit("ACC-001", 50_000);
 
 // Force release (blocking, waits for DB)
-Orbit.release("ACC-001");  // â†’ delta = +120,000
+Orbit.release("ACC-001");  // → delta = +120,000
 
 Orbit.shutdown();
 ```
 
-> **ðŸ’¡ That's it!** Stop fighting with database locks and race conditions.
+> **💡 That's it!** Stop fighting with database locks and race conditions.
 > Calculation logic is handled deterministically in-memory.
 > You just save the result. **Simple.**
 
@@ -279,15 +279,15 @@ OrbitLedger Orbit = OrbitLedger.builder()
 
 ---
 
-## ðŸ’° Balance Management
+## 💰 Balance Management
 
 Enable running balance tracking for bank-statement-style audit trails.
 
 ### When to Use
 
-- âœ… Need `balanceAfter` on each event (audit/compliance)
-- âœ… Need `runningBalance` in release result
-- âœ… Large account base (use `AFTER_RELEASE` eviction)
+- ✅ Need `balanceAfter` on each event (audit/compliance)
+- ✅ Need `runningBalance` in release result
+- ✅ Large account base (use `AFTER_RELEASE` eviction)
 - âŒ Don't need balance tracking? Skip this section - just use delta!
 
 ### Usage Example
@@ -314,7 +314,7 @@ With `AFTER_RELEASE` eviction, the next event for the same key reloads balance.
 **Keep `onRelease` synchronous:**
 
 ```java
-// âœ… CORRECT: Synchronous write
+// ✅ CORRECT: Synchronous write
 .onRelease(result -> {
     db.updateBalance(result.key(), result.runningBalance());
     // balanceLoader will see this on next access
@@ -328,14 +328,14 @@ With `AFTER_RELEASE` eviction, the next event for the same key reloads balance.
 
 **Why synchronous is safe:**
 ```
-Event 1,2,3 â†’ onRelease (sync DB write) â†’ Evict â†’ Event 4 â†’ balanceLoader
-                       â†‘                                        â†‘
+Event 1,2,3 → onRelease (sync DB write) → Evict → Event 4 → balanceLoader
+                       ↑                                        ↑
                   completes first                     reads updated value
 ```
 
 ---
 
-## ðŸ“¦ Output Model
+## 📦 Output Model
 
 ### OrbitRelease
 
@@ -395,7 +395,7 @@ for (LedgerEvent e : result.events()) {
 
 ---
 
-## ðŸ“– API Reference
+## 📖 API Reference
 
 ### OrbitLedger Interface
 
@@ -424,7 +424,7 @@ for (LedgerEvent e : result.events()) {
 
 ---
 
-## ï¿½ Example: E-Wallet
+## 💻 Example: E-Wallet
 
 ```java
 // Transactions
@@ -450,7 +450,7 @@ Orbit.release("ACC-001");
 
 ---
 
-## ðŸŒ± Spring Boot Integration
+## 🌱 Spring Boot Integration
 
 ### Configuration Bean
 
@@ -512,14 +512,14 @@ public class PaymentService {
 
 ---
 
-## ðŸ“Š Benchmark
+## 📊 Benchmark
 
 ### Performance Comparison
 
 | Metric              | Traditional DB         | Orbit (1 worker) | Orbit (4 workers) |
 | ------------------- | ---------------------- | ---------------- | ----------------- |
 | **Throughput**      | ~10K ops/sec           | **>1M ops/sec**  | **>3M ops/sec**   |
-| **Latency (p99)**   | 10-100ms               | **<1Î¼s**         | **<1Î¼s**          |
+| **Latency (p99)**   | 10-100ms               | **<1μs**         | **<1μs**          |
 | **Lock Contention** | High                   | **None**         | **None**          |
 | **GC Pressure**     | High                   | **Zero**         | **Zero**          |
 | **CPU Usage**       | Context switching      | **Efficient**    | **Efficient**     |
@@ -559,34 +559,34 @@ With Orbit (threshold=1000):
 Events are pre-allocated in the Ring Buffer. We reuse the same objects millions of times. No `new Object()`, no GC pauses.
 
 **Efficient CPU (Busy Spin)**
-Orbit uses "Busy Spin" wait strategies. While this looks like 100% core usage, it avoids expensive OS context switching â€” burning CPU cycles to save nanoseconds.
+Orbit uses "Busy Spin" wait strategies. While this looks like 100% core usage, it avoids expensive OS context switching — burning CPU cycles to save nanoseconds.
 
 ---
 
-## ðŸ”§ Building
+## 🔧 Building
 
 ```bash
 mvn clean compile    # Compile
 mvn test             # Run tests
-mvn jacoco:report    # Coverage report â†’ target/site/jacoco/index.html
+mvn jacoco:report    # Coverage report → target/site/jacoco/index.html
 ```
 
 ### Package Structure
 
 ```
 io.orbit.ledger
-â”œâ”€â”€ api/         # Public interfaces (OrbitLedger, BalanceLoader)
-â”œâ”€â”€ builder/     # OrbitLedgerBuilder
-â”œâ”€â”€ core/        # Loop, Events, KeyState
-â”œâ”€â”€ engine/      # OrbitDisruptor
-â”œâ”€â”€ enums/       # LedgerType, releaseType, EvictionPolicy
-â”œâ”€â”€ handler/     # LedgerWorkHandler
-â””â”€â”€ model/       # LedgerEvent, OrbitRelease
+├── api/         # Public interfaces (OrbitLedger, BalanceLoader)
+├── builder/     # OrbitLedgerBuilder
+├── core/        # Loop, Events, KeyState
+├── engine/      # OrbitDisruptor
+├── enums/       # LedgerType, releaseType, EvictionPolicy
+├── handler/     # LedgerWorkHandler
+└── model/       # LedgerEvent, OrbitRelease
 ```
 
 ---
 
-## ðŸ“‹ Release Guarantees
+## 📋 Release Guarantees
 
 | Guarantee        | Description                                  |
 | ---------------- | -------------------------------------------- |

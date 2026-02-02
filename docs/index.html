@@ -18,7 +18,7 @@
 <body>
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="index.html" class="navbar-brand"><span class="accent">âš¡</span> Orbit Ledger</a>
+            <a href="index.html" class="navbar-brand"><span class="accent">⚡</span> Orbit Ledger</a>
             <ul class="navbar-nav">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="getting-started.html">Getting Started</a></li>
@@ -41,7 +41,7 @@
         <section class="hero">
             <div class="hero-badge">
                 <span class="version">v1.0.0</span>
-                Open Source â€¢ MIT License
+                Open Source • MIT License
             </div>
             <h1>Orbit Ledger</h1>
             <p class="hero-tagline">
@@ -49,7 +49,7 @@
                 Built on LMAX Disruptor for lock-free, nanosecond-level performance.
             </p>
             <div class="hero-cta">
-                <a href="getting-started.html" class="btn btn-primary">Get Started â†’</a>
+                <a href="getting-started.html" class="btn btn-primary">Get Started →</a>
                 <a href="https://github.com/YOUR_USERNAME/Orbit-ledger" class="btn btn-secondary" target="_blank">View
                     on GitHub</a>
             </div>
@@ -70,29 +70,29 @@
                             consistency.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">âœ…</div>
+                        <div class="feature-icon">✅</div>
                         <h3>Correct Balance Transitions</h3>
                         <p>No race conditions, no lost updates. Every credit and debit is tracked with atomic precision.
                         </p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">âš¡</div>
+                        <div class="feature-icon">⚡</div>
                         <h3>Zero DB Locking</h3>
                         <p>Database is never in the hot path. Process millions of transactions in-memory, persist in
                             batches.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">ðŸ“¦</div>
+                        <div class="feature-icon">📦</div>
                         <h3>Unified Output</h3>
                         <p>History + Balance Delta in one atomic payload. Perfect for auditing and compliance.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">ðŸš€</div>
+                        <div class="feature-icon">🚀</div>
                         <h3>LMAX Disruptor Core</h3>
                         <p>Built on the same technology that powers LMAX Exchange. Lock-free, mechanical sympathy.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">ðŸ”§</div>
+                        <div class="feature-icon">🔧</div>
                         <h3>You Own Persistence</h3>
                         <p>We compute. You store. Full control over how and when you persist to your database.</p>
                     </div>
@@ -108,7 +108,7 @@
                     <p>Operations per second</p>
                 </div>
                 <div class="stat-item">
-                    <h3>&lt;1Î¼s</h3>
+                    <h3>&lt;1μs</h3>
                     <p>p99 Latency</p>
                 </div>
                 <div class="stat-item">
@@ -180,7 +180,7 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                 <div class="thread-item trad">
                                     <div class="thread-ball trad-ball"></div>
                                     <span class="thread-label">T1</span>
-                                    <span class="thread-status locked">ðŸ”’</span>
+                                    <span class="thread-status locked">🔒</span>
                                 </div>
                                 <div class="thread-item trad waiting">
                                     <div class="thread-ball trad-ball waiting-ball"></div>
@@ -203,10 +203,10 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                     <span class="thread-status wait">â³</span>
                                 </div>
                             </div>
-                            <div class="arch-arrow">â†“ One by one</div>
+                            <div class="arch-arrow">↓ One by one</div>
                             <div class="db-ops-row">
                                 <div class="db-op-box slow">
-                                    <div class="db-op-icon">ðŸ”Ž</div>
+                                    <div class="db-op-icon">🔎</div>
                                     <div class="db-op-label">SELECT FOR UPDATE</div>
                                 </div>
                                 <div class="db-op-box slow">
@@ -223,7 +223,7 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                             </div>
                         </div>
                         <div class="arch-stats">
-                            <div class="arch-stat"><span class="stat-bad">3Ã—5 = 15</span> DB calls</div>
+                            <div class="arch-stat"><span class="stat-bad">3×5 = 15</span> DB calls</div>
                             <div class="arch-stat"><span class="stat-bad">5</span> locks</div>
                         </div>
                         <div class="arch-warning">
@@ -233,38 +233,38 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
 
                     <!-- Orbit Architecture -->
                     <div class="arch-panel">
-                        <h3 class="arch-title arch-title-good">âœ… Orbit Ledger</h3>
-                        <p class="arch-subtitle">All threads instant â†’ Batch to DB</p>
+                        <h3 class="arch-title arch-title-good">✅ Orbit Ledger</h3>
+                        <p class="arch-subtitle">All threads instant → Batch to DB</p>
                         <div class="arch-diagram">
                             <div class="arch-label">5 Threads (Same Account)</div>
                             <div class="thread-row">
                                 <div class="thread-item fast">
                                     <div class="thread-ball Orbit-ball"></div>
                                     <span class="thread-label">T1</span>
-                                    <span class="thread-status done">âœ“</span>
+                                    <span class="thread-status done">✓</span>
                                 </div>
                                 <div class="thread-item fast">
                                     <div class="thread-ball Orbit-ball"></div>
                                     <span class="thread-label">T2</span>
-                                    <span class="thread-status done">âœ“</span>
+                                    <span class="thread-status done">✓</span>
                                 </div>
                                 <div class="thread-item fast">
                                     <div class="thread-ball Orbit-ball"></div>
                                     <span class="thread-label">T3</span>
-                                    <span class="thread-status done">âœ“</span>
+                                    <span class="thread-status done">✓</span>
                                 </div>
                                 <div class="thread-item fast">
                                     <div class="thread-ball Orbit-ball"></div>
                                     <span class="thread-label">T4</span>
-                                    <span class="thread-status done">âœ“</span>
+                                    <span class="thread-status done">✓</span>
                                 </div>
                                 <div class="thread-item fast">
                                     <div class="thread-ball Orbit-ball"></div>
                                     <span class="thread-label">T5</span>
-                                    <span class="thread-status done">âœ“</span>
+                                    <span class="thread-status done">✓</span>
                                 </div>
                             </div>
-                            <div class="arch-arrow">â†“ Ring Buffer</div>
+                            <div class="arch-arrow">↓ Ring Buffer</div>
                             <div class="ring-buffer-row">
                                 <div class="ring-buffer">
                                     <div class="ring-slot filled">+100</div>
@@ -273,9 +273,9 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                     <div class="ring-slot filled">-30</div>
                                     <div class="ring-slot filled">+80</div>
                                 </div>
-                                <div class="batch-summary">Î” = +300</div>
+                                <div class="batch-summary">Δ = +300</div>
                             </div>
-                            <div class="arch-arrow batch-arrow">â†“ Batch</div>
+                            <div class="arch-arrow batch-arrow">↓ Batch</div>
                             <div class="db-ops-row">
                                 <div class="db-op-box fast">
                                     <div class="db-op-icon">âœï¸</div>
@@ -287,7 +287,7 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                 </div>
                             </div>
                             <div class="time-indicator fast-time">
-                                <span>âš¡ &lt;1Î¼s per thread</span>
+                                <span>⚡ &lt;1μs per thread</span>
                             </div>
                         </div>
                         <div class="arch-stats">
@@ -329,13 +329,13 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                 <td><strong>DB Locks</strong></td>
                                 <td>1,000 locks</td>
                                 <td>0</td>
-                                <td style="color: var(--success);">âˆž</td>
+                                <td style="color: var(--success);">∞</td>
                             </tr>
                             <tr>
                                 <td><strong>SELECT FOR UPDATE</strong></td>
                                 <td>1,000 queries</td>
                                 <td>0</td>
-                                <td style="color: var(--success);">âˆž</td>
+                                <td style="color: var(--success);">∞</td>
                             </tr>
                             <tr>
                                 <td><strong>Throughput</strong></td>
@@ -346,7 +346,7 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                             <tr>
                                 <td><strong>Latency (p99)</strong></td>
                                 <td>10-100ms</td>
-                                <td>&lt;1Î¼s</td>
+                                <td>&lt;1μs</td>
                                 <td style="color: var(--success);">10,000x lower</td>
                             </tr>
                         </tbody>
@@ -378,14 +378,14 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
 <span class="keyword">&lt;/dependency&gt;</span></pre>
                     </div>
                 </div>
-                <a href="getting-started.html" class="btn btn-primary">Read the Docs â†’</a>
+                <a href="getting-started.html" class="btn btn-primary">Read the Docs →</a>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>Built with â¤ï¸ by <a href="https://linkedin.com/in/fauzan-hilmy" target="_blank">Fauzan Hilmy Abyan</a> â€¢ <a
-                href="https://github.com/YOUR_USERNAME/Orbit-ledger">GitHub</a> â€¢ <a
+        <p>Built with â¤ï¸ by <a href="https://linkedin.com/in/fauzan-hilmy" target="_blank">Fauzan Hilmy Abyan</a>
+            â€¢ <a href="https://github.com/YOUR_USERNAME/Orbit-ledger">GitHub</a> â€¢ <a
                 href="https://github.com/YOUR_USERNAME/Orbit-ledger/blob/main/LICENSE">MIT License</a></p>
     </footer>
 
