@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples - Orbit Ledger</title>
+    <meta name="description" content="Real-world examples of Orbit Ledger usage.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><span class="accent">âš¡</span> Orbit Ledger</a>
+            <ul class="navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+                <li><a href="configuration.html">Configuration</a></li>
+                <li><a href="api-reference.html">API</a></li>
+                <li><a href="examples.html" class="active">Examples</a></li>
+            </ul>
+            <a href="https://github.com/YOUR_USERNAME/Orbit-ledger" class="navbar-github" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                GitHub
+            </a>
+        </div>
+    </nav>
+    <main>
+        <div class="page-header">
+            <h1>Examples</h1>
+            <p>Real-world examples and integration patterns for Orbit Ledger.</p>
+        </div>
+        <div class="content-container">
+            <section id="ewallet">
+                <h2>ðŸ¦ E-Wallet Service</h2>
+                <p>A complete e-wallet implementation with deposit, withdraw, and transfer operations.</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span></div>
+                        <span class="filename">WalletService.java</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="annotation">@Service</span>
+<span class="keyword">public class</span> <span class="class">WalletService</span> {
+    <span class="keyword">private final</span> <span class="class">OrbitLedger</span> ledger;
+
+    <span class="keyword">public</span> <span class="function">WalletService</span>(<span class="class">WalletRepository</span> walletRepo) {
+        <span class="keyword">this</span>.ledger = <span class="class">OrbitLedger</span>.<span class="function">builder</span>()
+            .<span class="function">bufferSize</span>(<span class="number">8192</span>)
+            .<span class="function">releaseType</span>(<span class="class">ReleaseType</span>.HYBRID)
+            .<span class="function">releaseThreshold</span>(<span class="number">100</span>)
+            .<span class="function">releaseInterval</span>(<span class="class">Duration</span>.<span class="function">ofSeconds</span>(<span class="number">10</span>))
+            .<span class="function">balanceLoader</span>(id -> walletRepo.<span class="function">getBalance</span>(id))
+            .<span class="function">evictionPolicy</span>(<span class="class">EvictionPolicy</span>.AFTER_RELEASE)
+            .<span class="function">onRelease</span>(result -> {
+                walletRepo.<span class="function">updateBalance</span>(result.<span class="function">key</span>(), result.<span class="function">runningBalance</span>());
+            })
+            .<span class="function">build</span>();
+        ledger.<span class="function">start</span>();
+    }
+
+    <span class="keyword">public void</span> <span class="function">deposit</span>(<span class="class">String</span> walletId, <span class="keyword">long</span> amount) {
+        ledger.<span class="function">credit</span>(walletId, amount);
+    }
+
+    <span class="keyword">public void</span> <span class="function">withdraw</span>(<span class="class">String</span> walletId, <span class="keyword">long</span> amount) {
+        ledger.<span class="function">debit</span>(walletId, amount);
+    }
+
+    <span class="keyword">public void</span> <span class="function">transfer</span>(<span class="class">String</span> from, <span class="class">String</span> to, <span class="keyword">long</span> amount) {
+        ledger.<span class="function">debit</span>(from, amount);
+        ledger.<span class="function">credit</span>(to, amount);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Database Result Example -->
+                <div class="db-result-section">
+                    <h4>ðŸ“Š Example Database Result</h4>
+                    <p>After calling <code>deposit("wallet-001", 100)</code>, <code>withdraw("wallet-001", 30)</code>,
+                        <code>deposit("wallet-001", 50)</code>:
+                    </p>
+
+                    <div class="db-tables-row">
+                        <div class="db-table-wrapper">
+                            <div class="db-table-title">wallet_balance</div>
+                            <table class="db-result-table">
+                                <thead>
+                                    <tr>
+                                        <th>wallet_id</th>
+                                        <th>balance</th>
+                                        <th>updated_at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>wallet-001</td>
+                                        <td class="highlight-good">120</td>
+                                        <td>2024-01-15 10:30:00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="db-table-note">âœ… 1 UPDATE (running balance)</div>
+                        </div>
+
+                        <div class="db-table-wrapper">
+                            <div class="db-table-title">wallet_history</div>
+                            <table class="db-result-table">
+                                <thead>
+                                    <tr>
+                                        <th>wallet_id</th>
+                                        <th>amount</th>
+                                        <th>balance</th>
+                                        <th>type</th>
+                                        <th>created_at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>wallet-001</td>
+                                        <td class="highlight-good">+100</td>
+                                        <td>100</td>
+                                        <td>CREDIT</td>
+                                        <td>10:30:00.001</td>
+                                    </tr>
+                                    <tr>
+                                        <td>wallet-001</td>
+                                        <td class="highlight-bad">-30</td>
+                                        <td>70</td>
+                                        <td>DEBIT</td>
+                                        <td>10:30:00.002</td>
+                                    </tr>
+                                    <tr>
+                                        <td>wallet-001</td>
+                                        <td class="highlight-good">+50</td>
+                                        <td>120</td>
+                                        <td>CREDIT</td>
+                                        <td>10:30:00.003</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="db-table-note">âœ… 1 INSERT (batch history)</div>
+                        </div>
+                    </div>
+                    <div class="db-summary">
+                        ðŸ’¡ <strong>Result:</strong> 3 requests â†’ Only 2 DB calls (1 UPDATE + 1 batch INSERT)
+                    </div>
+                </div>
+            </section>
+            <section id="spring-boot">
+                <h2>ðŸƒ Spring Boot Integration</h2>
+                <p>Configure Orbit Ledger as a Spring Bean with automatic lifecycle management.</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span></div>
+                        <span class="filename">LedgerConfig.java</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="annotation">@Configuration</span>
+<span class="keyword">public class</span> <span class="class">LedgerConfig</span> {
+
+    <span class="annotation">@Bean</span>(destroyMethod = <span class="string">"shutdown"</span>)
+    <span class="keyword">public</span> <span class="class">OrbitLedger</span> <span class="function">ledgerEngine</span>(<span class="class">JdbcTemplate</span> jdbc) {
+        <span class="class">OrbitLedger</span> Orbit = <span class="class">OrbitLedger</span>.<span class="function">builder</span>()
+            .<span class="function">bufferSize</span>(<span class="number">8192</span>)
+            .<span class="function">releaseType</span>(<span class="class">ReleaseType</span>.HYBRID)
+            .<span class="function">releaseThreshold</span>(<span class="number">500</span>)
+            .<span class="function">releaseInterval</span>(<span class="class">Duration</span>.<span class="function">ofSeconds</span>(<span class="number">30</span>))
+            .<span class="function">balanceLoader</span>(id -> jdbc.<span class="function">queryForObject</span>(
+                <span class="string">"SELECT balance FROM accounts WHERE id = ?"</span>,
+                <span class="class">Long</span>.<span class="keyword">class</span>, id))
+            .<span class="function">evictionPolicy</span>(<span class="class">EvictionPolicy</span>.AFTER_RELEASE)
+            .<span class="function">onRelease</span>(result -> {
+                jdbc.<span class="function">update</span>(<span class="string">"UPDATE accounts SET balance = ? WHERE id = ?"</span>,
+                    result.<span class="function">runningBalance</span>(), result.<span class="function">key</span>());
+            })
+            .<span class="function">build</span>();
+        Orbit.<span class="function">start</span>();
+        <span class="keyword">return</span> Orbit;
+    }
+}</pre>
+                    </div>
+                </div>
+                <div class="callout callout-info">
+                    <div class="callout-title">ðŸ’¡ Spring Lifecycle</div>
+                    <p>Using <code>destroyMethod = "shutdown"</code> ensures the ledger releases all pending events
+                        before the application shuts down.</p>
+                </div>
+            </section>
+            <section id="batch-processing">
+                <h2>âš¡ High-Throughput Batch Processing</h2>
+                <p>Optimized configuration for processing millions of transactions.</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span></div>
+                        <span class="filename">BatchProcessor.java</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="class">OrbitLedger</span> ledger = <span class="class">OrbitLedger</span>.<span class="function">builder</span>()
+    .<span class="function">bufferSize</span>(<span class="number">65536</span>)           <span class="comment">// Large buffer for burst</span>
+    .<span class="function">threadCount</span>(<span class="number">8</span>)              <span class="comment">// Match CPU cores</span>
+    .<span class="function">releaseType</span>(<span class="class">ReleaseType</span>.COUNT)
+    .<span class="function">releaseThreshold</span>(<span class="number">10_000</span>)   <span class="comment">// Large batches</span>
+    .<span class="function">evictionPolicy</span>(<span class="class">EvictionPolicy</span>.NONE)
+    .<span class="function">onRelease</span>(result -> {
+        <span class="class">CompletableFuture</span>.<span class="function">runAsync</span>(() -> db.<span class="function">batchInsert</span>(result.<span class="function">events</span>()));
+    })
+    .<span class="function">build</span>();
+
+<span class="comment">// Generate 1 million transactions</span>
+<span class="class">IntStream</span>.<span class="function">range</span>(<span class="number">0</span>, <span class="number">1_000_000</span>).<span class="function">parallel</span>().<span class="function">forEach</span>(i -> {
+    <span class="class">String</span> account = <span class="string">"ACC-"</span> + (i % <span class="number">10_000</span>);
+    ledger.<span class="function">credit</span>(account, <span class="number">100</span>);
+});
+<span class="comment">// Throughput: ~1.2M ops/sec</span></pre>
+                    </div>
+                </div>
+                <div class="callout callout-warning">
+                    <div class="callout-title">âš ï¸ Thread Safety Note</div>
+                    <p>This example uses <strong>delta-only</strong> pattern (no <code>runningBalance()</code>) with
+                        <code>EvictionPolicy.NONE</code>, which is safe for async writes.
+                    </p>
+                    <p><strong>If using balance tracking</strong> with <code>AFTER_RELEASE</code> eviction +
+                        <code>balanceLoader</code>, keep <code>onRelease</code> <strong>synchronous</strong> to avoid
+                        race conditions where <code>balanceLoader</code> reads stale data before the async write
+                        completes.
+                    </p>
+                </div>
+            </section>
+            <section id="rest-api">
+                <h2>ðŸŒ REST API Controller</h2>
+                <p>Expose ledger operations via REST endpoints.</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span></div>
+                        <span class="filename">LedgerController.java</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/ledger"</span>)
+<span class="keyword">public class</span> <span class="class">LedgerController</span> {
+    <span class="keyword">private final</span> <span class="class">OrbitLedger</span> ledger;
+
+    <span class="annotation">@PostMapping</span>(<span class="string">"/{accountId}/credit"</span>)
+    <span class="keyword">public</span> <span class="class">ResponseEntity</span>&lt;<span class="class">Void</span>&gt; <span class="function">credit</span>(
+            <span class="annotation">@PathVariable</span> <span class="class">String</span> accountId,
+            <span class="annotation">@RequestParam</span> <span class="keyword">long</span> amount) {
+        ledger.<span class="function">credit</span>(accountId, amount);
+        <span class="keyword">return</span> <span class="class">ResponseEntity</span>.<span class="function">accepted</span>().<span class="function">build</span>();
+    }
+
+    <span class="annotation">@GetMapping</span>(<span class="string">"/{accountId}/balance"</span>)
+    <span class="keyword">public</span> <span class="class">ResponseEntity</span>&lt;<span class="class">Long</span>&gt; <span class="function">getBalance</span>(<span class="annotation">@PathVariable</span> <span class="class">String</span> accountId) {
+        <span class="class">OrbitRelease</span> release = ledger.<span class="function">release</span>(accountId);
+        <span class="keyword">return</span> <span class="class">ResponseEntity</span>.<span class="function">ok</span>(release.<span class="function">runningBalance</span>());
+    }
+}</pre>
+                    </div>
+                </div>
+                <div class="callout callout-warning">
+                    <div class="callout-title">âš ï¸ HTTP 202 Accepted</div>
+                    <p>Credit and debit operations return <code>202 Accepted</code> because they are non-blocking. Use
+                        <code>GET /balance</code> to force synchronization.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>Built with â¤ï¸ by <a href="https://linkedin.com/in/fauzan-hilmy" target="_blank">Fauzan Hilmy Abyan</a> â€¢ <a
+                href="https://github.com/YOUR_USERNAME/Orbit-ledger">GitHub</a></p>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

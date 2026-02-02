@@ -1,0 +1,402 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - Orbit Ledger</title>
+    <meta name="description" content="Complete API documentation for Orbit Ledger.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand"><span class="accent">âš¡</span> Orbit Ledger</a>
+            <ul class="navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+                <li><a href="configuration.html">Configuration</a></li>
+                <li><a href="api-reference.html" class="active">API</a></li>
+                <li><a href="examples.html">Examples</a></li>
+            </ul>
+            <a href="https://github.com/YOUR_USERNAME/Orbit-ledger" class="navbar-github" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                GitHub
+            </a>
+        </div>
+    </nav>
+    <main>
+        <div class="page-header">
+            <h1>API Reference</h1>
+            <p>Complete reference documentation for all Orbit Ledger interfaces and models.</p>
+        </div>
+        <div class="docs-layout">
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="sidebar-section">
+                        <h4>Core</h4>
+                        <ul>
+                            <li><a href="#OrbitLedger">OrbitLedger</a></li>
+                            <li><a href="#builder">Builder</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h4>Callbacks</h4>
+                        <ul>
+                            <li><a href="#balanceloader">BalanceLoader</a></li>
+                            <li><a href="#releaselistener">ReleaseListener</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h4>Models</h4>
+                        <ul>
+                            <li><a href="#OrbitRelease">OrbitRelease</a></li>
+                            <li><a href="#ledgerevent">LedgerEvent</a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-section">
+                        <h4>Enums</h4>
+                        <ul>
+                            <li><a href="#releasetype">ReleaseType</a></li>
+                            <li><a href="#evictionpolicy">EvictionPolicy</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+            <div class="content">
+                <section id="OrbitLedger">
+                    <h2>OrbitLedger</h2>
+                    <p>The main interface for interacting with the ledger engine.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                    class="dot green"></span></div>
+                            <span class="filename">OrbitLedger.java</span>
+                        </div>
+                        <div class="code-content">
+                            <pre><span class="keyword">public interface</span> <span class="class">OrbitLedger</span> {
+    <span class="keyword">static</span> <span class="class">Builder</span> <span class="function">builder</span>();
+    
+    <span class="keyword">void</span> <span class="function">credit</span>(<span class="class">String</span> key, <span class="keyword">long</span> amount);
+    <span class="keyword">void</span> <span class="function">debit</span>(<span class="class">String</span> key, <span class="keyword">long</span> amount);
+    <span class="class">OrbitRelease</span> <span class="function">release</span>(<span class="class">String</span> key);
+    <span class="keyword">void</span> <span class="function">releaseAll</span>();
+    <span class="keyword">void</span> <span class="function">start</span>();
+    <span class="keyword">void</span> <span class="function">shutdown</span>();
+}</pre>
+                        </div>
+                    </div>
+                    <h3>Methods</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Returns</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>builder()</code></td>
+                                    <td>Builder</td>
+                                    <td>Creates a new builder instance</td>
+                                </tr>
+                                <tr>
+                                    <td><code>credit(key, amount)</code></td>
+                                    <td>void</td>
+                                    <td>Submit a credit event (non-blocking)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>debit(key, amount)</code></td>
+                                    <td>void</td>
+                                    <td>Submit a debit event (non-blocking)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>release(key)</code></td>
+                                    <td>OrbitRelease</td>
+                                    <td>Force release for a specific key (blocking)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>releaseAll()</code></td>
+                                    <td>void</td>
+                                    <td>Force release all pending keys</td>
+                                </tr>
+                                <tr>
+                                    <td><code>start()</code></td>
+                                    <td>void</td>
+                                    <td>Start the engine</td>
+                                </tr>
+                                <tr>
+                                    <td><code>shutdown()</code></td>
+                                    <td>void</td>
+                                    <td>Graceful shutdown</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="builder">
+                    <h2>OrbitLedger.Builder</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Parameter</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>bufferSize(int)</code></td>
+                                    <td>Power of 2</td>
+                                    <td>Ring buffer capacity</td>
+                                </tr>
+                                <tr>
+                                    <td><code>threadCount(int)</code></td>
+                                    <td>â‰¥ 1</td>
+                                    <td>Number of worker threads</td>
+                                </tr>
+                                <tr>
+                                    <td><code>releaseType(ReleaseType)</code></td>
+                                    <td>Enum</td>
+                                    <td>Release strategy</td>
+                                </tr>
+                                <tr>
+                                    <td><code>releaseThreshold(int)</code></td>
+                                    <td>â‰¥ 1</td>
+                                    <td>Events before auto-release</td>
+                                </tr>
+                                <tr>
+                                    <td><code>releaseInterval(Duration)</code></td>
+                                    <td>Duration</td>
+                                    <td>Time between auto-releases</td>
+                                </tr>
+                                <tr>
+                                    <td><code>onRelease(listener)</code></td>
+                                    <td>Listener</td>
+                                    <td><strong>Required.</strong> Persistence callback</td>
+                                </tr>
+                                <tr>
+                                    <td><code>balanceLoader(loader)</code></td>
+                                    <td>BalanceLoader</td>
+                                    <td>Initial balance loader</td>
+                                </tr>
+                                <tr>
+                                    <td><code>defaultBalance(long)</code></td>
+                                    <td>long</td>
+                                    <td>Default starting balance</td>
+                                </tr>
+                                <tr>
+                                    <td><code>evictionPolicy(policy)</code></td>
+                                    <td>EvictionPolicy</td>
+                                    <td>Memory management strategy</td>
+                                </tr>
+                                <tr>
+                                    <td><code>build()</code></td>
+                                    <td>â€”</td>
+                                    <td>Creates the OrbitLedger instance</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="balanceloader">
+                    <h2>BalanceLoader</h2>
+                    <p>Functional interface for loading initial balances from your database.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                    class="dot green"></span></div>
+                            <span class="filename">BalanceLoader.java</span>
+                        </div>
+                        <div class="code-content">
+                            <pre><span class="annotation">@FunctionalInterface</span>
+<span class="keyword">public interface</span> <span class="class">BalanceLoader</span> {
+    <span class="keyword">long</span> <span class="function">load</span>(<span class="class">String</span> key);
+}</pre>
+                        </div>
+                    </div>
+                </section>
+                <section id="releaselistener">
+                    <h2>OrbitReleaseListener</h2>
+                    <p>Callback interface for handling released batches.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span
+                                    class="dot green"></span></div>
+                            <span class="filename">OrbitReleaseListener.java</span>
+                        </div>
+                        <div class="code-content">
+                            <pre><span class="annotation">@FunctionalInterface</span>
+<span class="keyword">public interface</span> <span class="class">OrbitReleaseListener</span> {
+    <span class="keyword">void</span> <span class="function">onRelease</span>(<span class="class">OrbitRelease</span> release);
+}</pre>
+                        </div>
+                    </div>
+                </section>
+                <section id="OrbitRelease">
+                    <h2>OrbitRelease</h2>
+                    <p>Immutable record containing a batch of events ready for persistence.</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Returns</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>key()</code></td>
+                                    <td>String</td>
+                                    <td>Account/entity identifier</td>
+                                </tr>
+                                <tr>
+                                    <td><code>delta()</code></td>
+                                    <td>long</td>
+                                    <td>Net change (sum of signed amounts)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>runningBalance()</code></td>
+                                    <td>Long</td>
+                                    <td>Final balance after batch</td>
+                                </tr>
+                                <tr>
+                                    <td><code>eventCount()</code></td>
+                                    <td>int</td>
+                                    <td>Number of events in batch</td>
+                                </tr>
+                                <tr>
+                                    <td><code>events()</code></td>
+                                    <td>List&lt;LedgerEvent&gt;</td>
+                                    <td>Immutable list of events</td>
+                                </tr>
+                                <tr>
+                                    <td><code>durationNs()</code></td>
+                                    <td>long</td>
+                                    <td>Processing time in nanoseconds</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="ledgerevent">
+                    <h2>LedgerEvent</h2>
+                    <p>Immutable record representing a single transaction event.</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Returns</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>key()</code></td>
+                                    <td>String</td>
+                                    <td>Account/entity identifier</td>
+                                </tr>
+                                <tr>
+                                    <td><code>sequence()</code></td>
+                                    <td>long</td>
+                                    <td>Monotonic sequence number</td>
+                                </tr>
+                                <tr>
+                                    <td><code>type()</code></td>
+                                    <td>LedgerType</td>
+                                    <td>CREDIT or DEBIT</td>
+                                </tr>
+                                <tr>
+                                    <td><code>amount()</code></td>
+                                    <td>long</td>
+                                    <td>Absolute amount</td>
+                                </tr>
+                                <tr>
+                                    <td><code>timestamp()</code></td>
+                                    <td>Instant</td>
+                                    <td>Event creation time</td>
+                                </tr>
+                                <tr>
+                                    <td><code>balanceAfter()</code></td>
+                                    <td>Long</td>
+                                    <td>Balance after this event</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="releasetype">
+                    <h2>ReleaseType</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>COUNT</code></td>
+                                    <td>Release when event count reaches threshold</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TIME</code></td>
+                                    <td>Release on time interval</td>
+                                </tr>
+                                <tr>
+                                    <td><code>HYBRID</code></td>
+                                    <td>Release on either condition (first wins)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="evictionpolicy">
+                    <h2>EvictionPolicy</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>NONE</code></td>
+                                    <td>Keep state in memory indefinitely</td>
+                                </tr>
+                                <tr>
+                                    <td><code>AFTER_RELEASE</code></td>
+                                    <td>Clear state after batch release. Requires balanceLoader</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>Built with â¤ï¸ by <a href="https://linkedin.com/in/fauzan-hilmy" target="_blank">Fauzan Hilmy Abyan</a> â€¢ <a
+                href="https://github.com/YOUR_USERNAME/Orbit-ledger">GitHub</a></p>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

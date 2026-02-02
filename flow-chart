@@ -1,0 +1,136 @@
+﻿flowchart TD
+    subgraph Input ["Step 1: Ingestion"]
+        P1[User Thread]
+        P2[API Thread]
+        InputEvent>"Event: Credit ACC-001 $100"]
+    end
+    subgraph Memory ["Step 2: LMAX Disruptor (Ring Buffer)"]
+        RB((RING BUFFER))
+        NoteRB["Ordered Sequence of Events\n1. ACC-001 (+100)\n2. ACC-002 (-50)\n3. ACC-001 (+20)"]
+    end
+    subgraph Workers ["Step 3: Parallel Workers (All Read Everything)"]
+        direction TB
+        
+        subgraph W0 ["Worker 0 (CPU Core 1)"]
+            Check0{"Hash % 2 == 0?"}
+            Match0[âœ… Process ACC-002]
+            Ignore0[âŒ Ignore ACC-001]
+        end
+        subgraph W1 ["Worker 1 (CPU Core 2)"]
+            Check1{"Hash % 2 == 1?"}
+            Match1[âœ… Process ACC-001]
+            Ignore1[âŒ Ignore ACC-002]
+        end
+    end
+    subgraph Batch ["Step 4: Batched Commit"]
+        B0[Batch: ACC-002 Updates]
+        B1[Batch: ACC-001 Updates]
+    end
+    P1 & P2 -->|Publish| RB
+    RB -->|Sequence 1| W0 & W1
+    RB -->|Sequence 2| W0 & W1
+    RB -->|Sequence 3| W0 & W1
+    W0 --> Check0
+    Check0 -->|Yes| Match0
+    Check0 -->|No| Ignore0
+    W1 --> Check1
+    Check1 -->|Yes| Match1
+    Check1 -->|No| Ignore1
+    Match0 --> B0
+    Match1 --> B1
+    style RB fill:#ccffcc,stroke:#090,stroke-width:4px
+    style Match0 fill:#e6f7ff,stroke:#006699
+    style Match1 fill:#e6f7ff,stroke:#006699
+    style Ignore0 fill:#fff0f0,stroke:#990000,stroke-dasharray: 5 5
+    style Ignore1 fill:#fff0f0,stroke:#990000,stroke-dasharray: 5 5
+
+
+
+
+    --------------------------
+
+
+before Orbits
+
+flowchart TD
+    subgraph Producers ["Producers (Any Thread)"]
+        P1[Thread A]
+        P2[Thread B]
+        P3[Thread C]
+    end
+    subgraph Engine ["Orbit Engine (Memory Realm)"]
+        RB(("Ring Buffer<br/>(Lock-Free)"))
+        
+        subgraph Processor ["Batch Processor (Single Threaded)"]
+            Logic["Event Handler\n(Zero-Lock Logic)"]
+            State[("In-Memory\nState Map")]
+        end
+    end
+    subgraph Persistence ["Persistence Layer"]
+        Disk[("Database")]
+    end
+    P1 & P2 & P3 --"1. Publish Event"--> RB
+    RB --"2. Sequence Order"--> Logic
+    
+    Logic --"3. Mutate (ns)"--> State
+    State -.-> Logic
+    Logic --"4. Flush Batch (x1000)"--> Disk
+    Note2[âœ… Deterministic Ordering<br/>âœ… Zero Lock Contention<br/>âœ… Cache Locality]
+    style RB fill:#ccffcc,stroke:#333,stroke-width:2px
+    style Logic fill:#e6f7ff,stroke:#006699,stroke-width:2px
+    style Note2 fill:#f0fff0,stroke:#0f0,stroke-dasharray: 5 5
+
+sequenceDiagram
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant DB as Database (Row Lock)
+    Note over T1, T2: Both want to update "Account A"
+    T1->>DB: 1. BEGIN TX & LOCK Row A
+    activate DB
+    Note right of DB: ðŸ”’ Locked by T1
+    T2->>DB: 1. BEGIN TX & LOCK Row A
+    Note right of T2: â³ BLOCKED (Waiting...)
+    T1->>DB: 2. UPDATE Balance
+    T1->>DB: 3. COMMIT
+    deactivate DB
+    Note right of DB: ðŸ”“ Lock Released
+    T2->>DB: (Unblocked) Acquired Lock
+    activate DB
+    T2->>DB: 2. UPDATE Balance
+    T2->>DB: 3. COMMIT
+    deactivate DB
+
+after Orbits
+
+
+sequenceDiagram
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant RB as Orbit Engine
+    participant DB as Database
+    Note over T1, T2: Write to RAM, not DB
+    T1->>RB: 1. Send Credit Event ($100)
+    T1-->>T1: âœ… Done (0 wait)
+    T2->>RB: 2. Send Debit Event ($50)
+    T2-->>T2: âœ… Done (0 wait)
+    Note over RB: Processing in Background...
+    RB->>RB: Update Memory State (+100)
+    RB->>RB: Update Memory State (-50)
+    Note over RB, DB: Batch Persistence
+    RB->>DB: 3. ONE SAVE (Delta +$50, 2 History Rows)
+
+sequenceDiagram
+    participant T1 as Thread 1
+    participant T2 as Thread 2
+    participant RB as Orbit Engine
+    participant DB as Database
+    Note over T1, T2: Write to RAM, not DB
+    T1->>RB: 1. Send Credit Event ($100)
+    T1-->>T1: âœ… Done (0 wait)
+    T2->>RB: 2. Send Debit Event ($50)
+    T2-->>T2: âœ… Done (0 wait)
+    Note over RB: Processing in Background...
+    RB->>RB: Update Memory State (+100)
+    RB->>RB: Update Memory State (-50)
+    Note over RB, DB: Batch Persistence
+    RB->>DB: 3. ONE SAVE (Delta +$50, 2 History Rows)
