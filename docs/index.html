@@ -64,7 +64,7 @@
                 </div>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">ðŸ”¢</div>
+                        <div class="feature-icon">🔢</div>
                         <h3>Deterministic Ordering</h3>
                         <p>Same inputs produce same outputs. Every time. Per-account event sequencing guarantees
                             consistency.</p>
@@ -156,7 +156,7 @@ Orbit.<span class="function">debit</span>(<span class="string">"ACC-001"</span>,
 Orbit.<span class="function">credit</span>(<span class="string">"ACC-001"</span>, <span class="number">50_000</span>);
 
 <span class="comment">// Force release when needed</span>
-Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span>);  <span class="comment">// â†’ delta = +120,000</span></pre>
+Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span>);  <span class="comment">// → delta = +120,000</span></pre>
                     </div>
                 </div>
             </div>
@@ -172,8 +172,8 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                 <div class="architecture-comparison">
                     <!-- Traditional Architecture -->
                     <div class="arch-panel">
-                        <h3 class="arch-title arch-title-bad">âŒ Traditional Database</h3>
-                        <p class="arch-subtitle">Each thread waits for lock â†’ Sequential</p>
+                        <h3 class="arch-title arch-title-bad">❌ Traditional Database</h3>
+                        <p class="arch-subtitle">Each thread waits for lock → Sequential</p>
                         <div class="arch-diagram">
                             <div class="arch-label">5 Threads (Same Account)</div>
                             <div class="thread-row">
@@ -185,22 +185,22 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                 <div class="thread-item trad waiting">
                                     <div class="thread-ball trad-ball waiting-ball"></div>
                                     <span class="thread-label">T2</span>
-                                    <span class="thread-status wait">â³</span>
+                                    <span class="thread-status wait">⏳</span>
                                 </div>
                                 <div class="thread-item trad waiting">
                                     <div class="thread-ball trad-ball waiting-ball"></div>
                                     <span class="thread-label">T3</span>
-                                    <span class="thread-status wait">â³</span>
+                                    <span class="thread-status wait">⏳</span>
                                 </div>
                                 <div class="thread-item trad waiting">
                                     <div class="thread-ball trad-ball waiting-ball"></div>
                                     <span class="thread-label">T4</span>
-                                    <span class="thread-status wait">â³</span>
+                                    <span class="thread-status wait">⏳</span>
                                 </div>
                                 <div class="thread-item trad waiting">
                                     <div class="thread-ball trad-ball waiting-ball"></div>
                                     <span class="thread-label">T5</span>
-                                    <span class="thread-status wait">â³</span>
+                                    <span class="thread-status wait">⏳</span>
                                 </div>
                             </div>
                             <div class="arch-arrow">↓ One by one</div>
@@ -210,16 +210,16 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                                     <div class="db-op-label">SELECT FOR UPDATE</div>
                                 </div>
                                 <div class="db-op-box slow">
-                                    <div class="db-op-icon">âœï¸</div>
+                                    <div class="db-op-icon">✍️</div>
                                     <div class="db-op-label">UPDATE</div>
                                 </div>
                                 <div class="db-op-box slow">
-                                    <div class="db-op-icon">ðŸ“</div>
+                                    <div class="db-op-icon">📥</div>
                                     <div class="db-op-label">INSERT</div>
                                 </div>
                             </div>
                             <div class="time-indicator slow-time">
-                                <span>â±ï¸ ~500ms total</span>
+                                <span>⏱️ ~500ms total</span>
                             </div>
                         </div>
                         <div class="arch-stats">
@@ -227,7 +227,7 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                             <div class="arch-stat"><span class="stat-bad">5</span> locks</div>
                         </div>
                         <div class="arch-warning">
-                            âš ï¸ Risk of timeout, deadlock, or lock contention under high concurrency
+                            ⚠️ Risk of timeout, deadlock, or lock contention under high concurrency
                         </div>
                     </div>
 
@@ -278,11 +278,11 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
                             <div class="arch-arrow batch-arrow">↓ Batch</div>
                             <div class="db-ops-row">
                                 <div class="db-op-box fast">
-                                    <div class="db-op-icon">âœï¸</div>
+                                    <div class="db-op-icon">✍️</div>
                                     <div class="db-op-label fast">UPDATE</div>
                                 </div>
                                 <div class="db-op-box fast">
-                                    <div class="db-op-icon">ðŸ“</div>
+                                    <div class="db-op-icon">📥</div>
                                     <div class="db-op-label fast">INSERT history</div>
                                 </div>
                             </div>
@@ -384,8 +384,8 @@ Orbit.<span class="function">release</span>(<span class="string">"ACC-001"</span
     </main>
 
     <footer class="footer">
-        <p>Built with â¤ï¸ by <a href="https://linkedin.com/in/fauzan-hilmy" target="_blank">Fauzan Hilmy Abyan</a>
-            â€¢ <a href="https://github.com/YOUR_USERNAME/Orbit-ledger">GitHub</a> â€¢ <a
+        <p>Built with ❤️ by <a href="https://linkedin.com/in/fauzan-hilmy" target="_blank">Fauzan Hilmy Abyan</a>
+            • <a href="https://github.com/YOUR_USERNAME/Orbit-ledger">GitHub</a> • <a
                 href="https://github.com/YOUR_USERNAME/Orbit-ledger/blob/main/LICENSE">MIT License</a></p>
     </footer>
 

@@ -41,7 +41,7 @@
 
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-btn';
-            copyBtn.innerHTML = 'ðŸ“‹ Copy';
+            copyBtn.innerHTML = '📋 Copy';
             copyBtn.style.cssText = `
                 background: var(--accent);
                 border: none;
@@ -57,14 +57,14 @@
                 const code = block.querySelector('pre').textContent;
                 try {
                     await navigator.clipboard.writeText(code);
-                    copyBtn.innerHTML = 'âœ“ Copied!';
+                    copyBtn.innerHTML = '✓ Copied!';
                     copyBtn.style.background = 'var(--success)';
                     setTimeout(() => {
-                        copyBtn.innerHTML = 'ðŸ“‹ Copy';
+                        copyBtn.innerHTML = '📋 Copy';
                         copyBtn.style.background = 'var(--accent)';
                     }, 2000);
                 } catch (err) {
-                    copyBtn.innerHTML = 'âŒ Failed';
+                    copyBtn.innerHTML = '❌ Failed';
                 }
             });
 
