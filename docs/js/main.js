@@ -17,6 +17,53 @@
         });
     }
 
+    // Mobile navbar toggle
+    function initMobileNav() {
+        const toggle = document.querySelector('.navbar-toggle');
+        const menu = document.querySelector('.navbar-menu');
+        const overlay = document.querySelector('.navbar-overlay');
+
+        if (!toggle || !menu) return;
+
+        function closeMenu() {
+            toggle.classList.remove('active');
+            menu.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openMenu() {
+            toggle.classList.add('active');
+            menu.classList.add('active');
+            if (overlay) overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        toggle.addEventListener('click', () => {
+            if (menu.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        if (overlay) {
+            overlay.addEventListener('click', closeMenu);
+        }
+
+        // Close menu when clicking a nav link
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Close menu on window resize if open
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                closeMenu();
+            }
+        });
+    }
+
     // Smooth scroll for anchor links
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -137,13 +184,13 @@
         });
     }
 
-    // Starfield Animation
+    // Orbit Arcs Animation
     function initStarfield() {
         const hero = document.querySelector('.hero');
         if (!hero) return;
 
         const canvas = document.createElement('canvas');
-        canvas.className = 'starfield';
+        canvas.className = 'orbit-arcs';
         canvas.style.cssText = `
             position: absolute;
             top: 0;
@@ -157,54 +204,82 @@
         hero.insertBefore(canvas, hero.firstChild);
 
         const ctx = canvas.getContext('2d');
-        let stars = [];
-        const numStars = 150;
+        let time = 0;
 
         function resize() {
             canvas.width = hero.offsetWidth;
             canvas.height = hero.offsetHeight;
-            initStars();
         }
 
-        function initStars() {
-            stars = [];
-            for (let i = 0; i < numStars; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5 + 0.5,
-                    alpha: Math.random() * 0.8 + 0.2,
-                    speed: Math.random() * 0.3 + 0.1,
-                    twinkle: Math.random() * 0.02
-                });
-            }
+        function drawOrbitArc(x, y, radius, startAngle, endAngle, alpha, lineWidth) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, startAngle, endAngle);
+            ctx.strokeStyle = `rgba(0, 210, 255, ${alpha})`;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+        }
+
+        function drawOrbitDot(centerX, centerY, radius, angle, dotRadius, alpha) {
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+
+            // Glow effect
+            ctx.beginPath();
+            ctx.arc(x, y, dotRadius * 2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 210, 255, ${alpha * 0.3})`;
+            ctx.fill();
+
+            // Dot
+            ctx.beginPath();
+            ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 210, 255, ${alpha})`;
+            ctx.fill();
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 0.008;
 
-            stars.forEach(star => {
-                // Twinkle effect
-                star.alpha += star.twinkle;
-                if (star.alpha >= 1 || star.alpha <= 0.2) {
-                    star.twinkle = -star.twinkle;
-                }
+            const w = canvas.width;
+            const h = canvas.height;
 
-                // Slow upward drift
-                star.y -= star.speed;
-                if (star.y < 0) {
-                    star.y = canvas.height;
-                    star.x = Math.random() * canvas.width;
-                }
+            // Orbit radii
+            const radius1 = Math.min(w, h) * 0.4;
+            const radius2 = Math.min(w, h) * 0.55;
+            const radius3 = Math.min(w, h) * 0.7;
 
-                // Draw star with glow
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-                ctx.shadowBlur = star.radius * 2;
-                ctx.shadowColor = '#00d2ff';
-                ctx.fill();
-            });
+            // Subtle pulsing alpha
+            const pulse1 = 0.15 + Math.sin(time * 0.5) * 0.05;
+            const pulse2 = 0.12 + Math.sin(time * 0.5 + 1) * 0.04;
+            const pulse3 = 0.08 + Math.sin(time * 0.5 + 2) * 0.03;
+
+            // Top-left arcs (0 to PI/2)
+            drawOrbitArc(0, 0, radius1, 0, Math.PI / 2, pulse1, 1.5);
+            drawOrbitArc(0, 0, radius2, 0, Math.PI / 2, pulse2, 1);
+            drawOrbitArc(0, 0, radius3, 0, Math.PI / 2, pulse3, 0.5);
+
+            // Bottom-right arcs (PI to 1.5*PI)
+            drawOrbitArc(w, h, radius1, Math.PI, Math.PI * 1.5, pulse1, 1.5);
+            drawOrbitArc(w, h, radius2, Math.PI, Math.PI * 1.5, pulse2, 1);
+            drawOrbitArc(w, h, radius3, Math.PI, Math.PI * 1.5, pulse3, 0.5);
+
+            // Animated dots on top-left orbits (traveling from right to down)
+            const dotAngle1 = (time * 0.8) % (Math.PI / 2);
+            const dotAngle2 = (time * 0.6 + 0.5) % (Math.PI / 2);
+            const dotAngle3 = (time * 0.4 + 1) % (Math.PI / 2);
+
+            drawOrbitDot(0, 0, radius1, dotAngle1, 4, 0.9);
+            drawOrbitDot(0, 0, radius2, dotAngle2, 3, 0.7);
+            drawOrbitDot(0, 0, radius3, dotAngle3, 2, 0.5);
+
+            // Animated dots on bottom-right orbits
+            const brDotAngle1 = Math.PI + (time * 0.8) % (Math.PI / 2);
+            const brDotAngle2 = Math.PI + (time * 0.6 + 0.5) % (Math.PI / 2);
+            const brDotAngle3 = Math.PI + (time * 0.4 + 1) % (Math.PI / 2);
+
+            drawOrbitDot(w, h, radius1, brDotAngle1, 4, 0.9);
+            drawOrbitDot(w, h, radius2, brDotAngle2, 3, 0.7);
+            drawOrbitDot(w, h, radius3, brDotAngle3, 2, 0.5);
 
             requestAnimationFrame(animate);
         }
@@ -220,7 +295,7 @@
         initSmoothScroll();
         initCodeCopy();
         initScrollSpy();
-        initMobileMenu();
+        initMobileNav();
         initScrollAnimations();
         initStarfield();
 
