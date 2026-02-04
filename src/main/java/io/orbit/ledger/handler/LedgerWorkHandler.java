@@ -11,7 +11,6 @@ import io.orbit.ledger.enums.LedgerType;
 import io.orbit.ledger.model.OrbitRelease;
 import io.orbit.ledger.model.LedgerEvent;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,6 +62,13 @@ public class LedgerWorkHandler implements EventHandler<LedgerRingEvent> {
     }
 
     /**
+     * OPTIMIZATION: Uses pre-computed hashCode from event (v1.2.0).
+     */
+    private boolean shouldHandleByHash(int keyHashCode) {
+        return Math.abs(keyHashCode % totalWorkers) == workerId;
+    }
+
+    /**
      * Ensure key state is initialized with balance.
      * Called once per key on first access.
      */
@@ -84,7 +90,8 @@ public class LedgerWorkHandler implements EventHandler<LedgerRingEvent> {
 
         if (ledgerRingEvent.getKey() == null)
             return;
-        if (!this.shouldHandle(ledgerRingEvent.getKey())) {
+        // OPTIMIZATION: Use cached hashCode from event (v1.2.0)
+        if (!this.shouldHandleByHash(ledgerRingEvent.getKeyHashCode())) {
             return;
         }
 
@@ -106,16 +113,15 @@ public class LedgerWorkHandler implements EventHandler<LedgerRingEvent> {
             state.debit(ledgerRingEvent.getAmount());
         }
 
-        // Create event with balanceAfter tracking
-        Long balanceAfter = state.getCurrentBalance();
-        LedgerEvent event = new LedgerEvent(
-                key,
+        // OPTIMIZATION: Store as primitives instead of creating LedgerEvent object
+        // (v1.2.0)
+        long balanceAfter = state.getCurrentBalance();
+        state.addPendingEvent(
                 state.nextSequence(),
                 ledgerRingEvent.getType(),
                 ledgerRingEvent.getAmount(),
-                Instant.ofEpochMilli(ledgerRingEvent.getTimestampMs()),
+                ledgerRingEvent.getTimestampMs(),
                 balanceAfter);
-        state.addPendingEvent(event);
 
         if ((ReleaseType.COUNT == releaseType || ReleaseType.HYBRID == releaseType)
                 && state.getPendingCount() >= releaseThreshold) {
@@ -133,7 +139,8 @@ public class LedgerWorkHandler implements EventHandler<LedgerRingEvent> {
 
         long delta = state.getPendingDelta();
         long eventCount = state.getPendingCount();
-        List<LedgerEvent> batchEvents = state.getAndClearPendingEvents();
+        // OPTIMIZATION: Creates LedgerEvent objects only at release time (v1.2.0)
+        List<LedgerEvent> batchEvents = state.getAndClearPendingEvents(key);
 
         long startNs = System.nanoTime();
         state.resetPendingDelta();
@@ -172,4 +179,3 @@ public class LedgerWorkHandler implements EventHandler<LedgerRingEvent> {
         }
     }
 }
-

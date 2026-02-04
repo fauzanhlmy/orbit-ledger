@@ -1672,3 +1672,65 @@ li {
     font-size: 0.9rem;
     color: var(--text-light);
 }
+
+/* Benchmark Accordion */
+.benchmark-accordion {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-top: var(--space-xl);
+    overflow: hidden;
+}
+
+.benchmark-accordion summary {
+    padding: var(--space-lg);
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    transition: background 0.2s;
+    list-style: none;
+    /* Hide default triangle */
+}
+
+.benchmark-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.benchmark-accordion summary:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.benchmark-accordion summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.2em;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.benchmark-accordion[open] summary::after {
+    content: '-';
+}
+
+.benchmark-tables {
+    padding: 0 var(--space-lg) var(--space-lg);
+    border-top: 1px solid var(--border);
+}
+
+.benchmark-tables h3 {
+    margin-top: var(--space-xl);
+    font-size: 1.1em;
+    color: var(--text-light);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: var(--space-sm);
+}
+
+/* Optimization for small screens */
+@media (max-width: 768px) {
+    .benchmark-tables {
+        padding: 0 var(--space-md) var(--space-md);
+    }
+}

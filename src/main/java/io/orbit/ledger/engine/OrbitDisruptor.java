@@ -1,6 +1,9 @@
 package io.orbit.ledger.engine;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.BusySpinWaitStrategy;
+import com.lmax.disruptor.WaitStrategy;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import io.orbit.ledger.api.BalanceLoader;
@@ -8,9 +11,10 @@ import io.orbit.ledger.api.OrbitLedger;
 import io.orbit.ledger.api.OrbitReleaseListener;
 import io.orbit.ledger.core.LedgerRingEvent;
 import io.orbit.ledger.core.LedgerRingEventFactory;
-import io.orbit.ledger.enums.ReleaseType;
 import io.orbit.ledger.enums.EvictionPolicy;
 import io.orbit.ledger.enums.LedgerType;
+import io.orbit.ledger.enums.PerformanceMode;
+import io.orbit.ledger.enums.ReleaseType;
 import io.orbit.ledger.handler.LedgerFlushHandler;
 import io.orbit.ledger.handler.LedgerWorkHandler;
 import io.orbit.ledger.model.OrbitRelease;
@@ -45,19 +49,26 @@ public class OrbitDisruptor implements OrbitLedger {
             BalanceLoader balanceLoader,
             long defaultBalance,
             EvictionPolicy evictionPolicy,
-            Duration releaseInterval) {
+            Duration releaseInterval,
+            PerformanceMode performanceMode) {
 
         this.releaseType = releaseType;
         this.releaseInterval = releaseInterval;
 
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
 
+        // Select wait strategy based on performance mode
+        WaitStrategy waitStrategy = switch (performanceMode) {
+            case MAXIMUM -> new YieldingWaitStrategy();
+            default -> new BlockingWaitStrategy(); // STANDARD
+        };
+
         this.disruptor = new Disruptor<>(
                 new LedgerRingEventFactory(),
                 bufferSize,
                 threadFactory,
                 ProducerType.MULTI,
-                new BlockingWaitStrategy());
+                waitStrategy);
 
         LedgerWorkHandler[] workHandlers = new LedgerWorkHandler[threadCount];
         for (int i = 0; i < threadCount; i++) {
@@ -151,4 +162,3 @@ public class OrbitDisruptor implements OrbitLedger {
         disruptor.publishEvent((event, sequence) -> event.setCommitFlush());
     }
 }
-

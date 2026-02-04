@@ -1,8 +1,9 @@
 package io.orbit.ledger.api;
 
 import io.orbit.ledger.builder.OrbitLedgerBuilder;
-import io.orbit.ledger.enums.ReleaseType;
 import io.orbit.ledger.enums.EvictionPolicy;
+import io.orbit.ledger.enums.PerformanceMode;
+import io.orbit.ledger.enums.ReleaseType;
 import io.orbit.ledger.model.OrbitRelease;
 
 import java.time.Duration;
@@ -131,7 +132,20 @@ public interface OrbitLedger {
          */
         Builder evictionPolicy(EvictionPolicy policy);
 
+        /**
+         * Set performance mode for throughput/latency tuning.
+         * <p>
+         * Controls the trade-off between CPU usage and performance.
+         * Default: {@code BALANCED} (low CPU, ~400K-500K ops/sec)
+         * </p>
+         *
+         * @param mode performance mode to use
+         * @return this builder
+         * @since 1.3.0
+         * @see PerformanceMode
+         */
+        Builder performanceMode(PerformanceMode mode);
+
         OrbitLedger build();
     }
 }
-

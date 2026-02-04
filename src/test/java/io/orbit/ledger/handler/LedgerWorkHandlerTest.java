@@ -199,7 +199,7 @@ class LedgerWorkHandlerTest {
         LedgerKeyState state = keyStates.computeIfAbsent("user1", k -> new LedgerKeyState());
         state.initialize(0); // Initialize balance
         state.credit(50);
-        state.addPendingEvent(new LedgerEvent("user1", 1, LedgerType.CREDIT, 50, Instant.now()));
+        state.addPendingEvent(1, LedgerType.CREDIT, 50, System.currentTimeMillis(), 50);
 
         // Send COMMIT_FLUSH event
         LedgerRingEvent event = new LedgerRingEvent();
@@ -322,4 +322,3 @@ class LedgerWorkHandlerTest {
         assertFalse(keyStates.containsKey("user1"));
     }
 }
-

@@ -1,9 +1,13 @@
 package io.orbit.ledger.builder;
 
 import io.orbit.ledger.api.OrbitLedger;
+import io.orbit.ledger.enums.EvictionPolicy;
+import io.orbit.ledger.enums.PerformanceMode;
 import io.orbit.ledger.enums.ReleaseType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,5 +122,78 @@ class OrbitLedgerBuilderTest {
                 .build();
         assertNotNull(engine);
     }
-}
 
+    @Test
+    @DisplayName("Eviction policy cannot be null")
+    void evictionPolicyNotNull() {
+        OrbitLedger.Builder builder = OrbitLedger.builder();
+        assertThrows(NullPointerException.class, () -> builder.evictionPolicy(null));
+    }
+
+    @Test
+    @DisplayName("Performance mode cannot be null")
+    void performanceModeNotNull() {
+        OrbitLedger.Builder builder = OrbitLedger.builder();
+        assertThrows(NullPointerException.class, () -> builder.performanceMode(null));
+    }
+
+    @Test
+    @DisplayName("Build with release interval")
+    void buildWithReleaseInterval() {
+        OrbitLedger engine = OrbitLedger.builder()
+                .releaseType(ReleaseType.TIME)
+                .releaseInterval(Duration.ofMillis(100))
+                .onRelease(ctx -> {
+                })
+                .build();
+        assertNotNull(engine);
+    }
+
+    @Test
+    @DisplayName("Build with balance loader")
+    void buildWithBalanceLoader() {
+        OrbitLedger engine = OrbitLedger.builder()
+                .balanceLoader(key -> 1000L)
+                .onRelease(ctx -> {
+                })
+                .build();
+        assertNotNull(engine);
+    }
+
+    @Test
+    @DisplayName("Build with default balance")
+    void buildWithDefaultBalance() {
+        OrbitLedger engine = OrbitLedger.builder()
+                .defaultBalance(5000L)
+                .onRelease(ctx -> {
+                })
+                .build();
+        assertNotNull(engine);
+    }
+
+    @Test
+    @DisplayName("All performance modes accepted")
+    void allPerformanceModes() {
+        for (PerformanceMode mode : PerformanceMode.values()) {
+            OrbitLedger engine = OrbitLedger.builder()
+                    .performanceMode(mode)
+                    .onRelease(ctx -> {
+                    })
+                    .build();
+            assertNotNull(engine);
+        }
+    }
+
+    @Test
+    @DisplayName("All eviction policies accepted")
+    void allEvictionPolicies() {
+        for (EvictionPolicy policy : EvictionPolicy.values()) {
+            OrbitLedger engine = OrbitLedger.builder()
+                    .evictionPolicy(policy)
+                    .onRelease(ctx -> {
+                    })
+                    .build();
+            assertNotNull(engine);
+        }
+    }
+}

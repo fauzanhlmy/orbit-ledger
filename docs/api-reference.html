@@ -77,6 +77,7 @@
                         <ul>
                             <li><a href="#releasetype">ReleaseType</a></li>
                             <li><a href="#evictionpolicy">EvictionPolicy</a></li>
+                            <li><a href="#performancemode">PerformanceMode</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -210,6 +211,11 @@
                                     <td><code>evictionPolicy(policy)</code></td>
                                     <td>EvictionPolicy</td>
                                     <td>Memory management strategy</td>
+                                </tr>
+                                <tr>
+                                    <td><code>performanceMode(mode)</code></td>
+                                    <td>PerformanceMode</td>
+                                    <td><strong>STANDARD</strong> (default) or <strong>MAXIMUM</strong></td>
                                 </tr>
                                 <tr>
                                     <td><code>build()</code></td>
@@ -393,6 +399,29 @@
                                 <tr>
                                     <td><code>AFTER_RELEASE</code></td>
                                     <td>Clear state after batch release. Requires balanceLoader</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section id="performancemode">
+                    <h2>PerformanceMode</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>STANDARD</code></td>
+                                    <td>(Default) Low CPU usage, uses thread parking. ~2.8M ops/sec.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>MAXIMUM</code></td>
+                                    <td>Moderate CPU usage, uses thread yielding. ~4.5M ops/sec.</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -35,12 +35,9 @@ class EngineComponentsTest {
         state.debit(30);
         state.credit(50);
 
-        state.addPendingEvent(
-                new LedgerEvent("key", 1, LedgerType.CREDIT, 100, java.time.Instant.now()));
-        state.addPendingEvent(
-                new LedgerEvent("key", 2, LedgerType.DEBIT, 30, java.time.Instant.now()));
-        state.addPendingEvent(
-                new LedgerEvent("key", 3, LedgerType.CREDIT, 50, java.time.Instant.now()));
+        state.addPendingEvent(1, LedgerType.CREDIT, 100, System.currentTimeMillis(), 100);
+        state.addPendingEvent(2, LedgerType.DEBIT, 30, System.currentTimeMillis(), 70);
+        state.addPendingEvent(3, LedgerType.CREDIT, 50, System.currentTimeMillis(), 120);
 
         assertEquals(120, state.getPendingDelta());
         assertEquals(3, state.getPendingCount());
@@ -55,11 +52,10 @@ class EngineComponentsTest {
         state.nextSequence();
 
         state.credit(100);
-        state.addPendingEvent(
-                new LedgerEvent("key", 1, LedgerType.CREDIT, 100, java.time.Instant.now()));
+        state.addPendingEvent(1, LedgerType.CREDIT, 100, System.currentTimeMillis(), 100);
 
         state.resetPendingDelta();
-        state.getAndClearPendingEvents();
+        state.getAndClearPendingEvents("key");
         state.setLastCommittedSequence(2);
 
         assertEquals(0, state.getPendingDelta());
@@ -140,5 +136,81 @@ class EngineComponentsTest {
         assertSame(future, event.getResultFuture());
         assertTrue(event.getTimestampMs() > 0);
     }
-}
 
+    @Test
+    @DisplayName("LedgerRingEvent setCommitFlush")
+    void ledgerRingEventSetCommitFlush() {
+        LedgerRingEvent event = new LedgerRingEvent();
+        event.set("someKey", LedgerType.CREDIT, 100);
+
+        event.setCommitFlush();
+
+        assertNull(event.getKey());
+        assertEquals(LedgerType.RELEASE_ALL, event.getType());
+        assertEquals(0, event.getAmount());
+        assertEquals(0, event.getTimestampMs());
+        assertNull(event.getResultFuture());
+    }
+
+    @Test
+    @DisplayName("LedgerRingEvent getKeyHashCode caching")
+    void ledgerRingEventKeyHashCode() {
+        LedgerRingEvent event = new LedgerRingEvent();
+
+        // With key
+        event.set("testKey", LedgerType.CREDIT, 100);
+        assertEquals("testKey".hashCode(), event.getKeyHashCode());
+
+        // With null key
+        event.set(null, LedgerType.CREDIT, 100);
+        assertEquals(0, event.getKeyHashCode());
+    }
+
+    @Test
+    @DisplayName("KeyState balance initialization")
+    void keyStateBalanceInitialization() {
+        LedgerKeyState state = new LedgerKeyState();
+
+        assertFalse(state.isInitialized());
+        assertEquals(0, state.getCommittedBalance());
+
+        state.initialize(1000);
+
+        assertTrue(state.isInitialized());
+        assertEquals(1000, state.getCommittedBalance());
+    }
+
+    @Test
+    @DisplayName("KeyState balance updates")
+    void keyStateBalanceUpdates() {
+        LedgerKeyState state = new LedgerKeyState();
+        state.initialize(1000);
+
+        state.credit(500);
+        assertEquals(1500, state.getCurrentBalance()); // 1000 + 500 pending
+
+        state.updateCommittedBalance(500);
+        assertEquals(1500, state.getCommittedBalance()); // 1000 + 500 committed
+
+        state.resetPendingDelta();
+        assertEquals(1500, state.getCurrentBalance()); // 1500 + 0 pending
+    }
+
+    @Test
+    @DisplayName("KeyState capacity growth")
+    void keyStateCapacityGrowth() {
+        LedgerKeyState state = new LedgerKeyState();
+
+        // Add more than initial capacity (32) events
+        for (int i = 0; i < 50; i++) {
+            state.addPendingEvent(i, LedgerType.CREDIT, 100, System.currentTimeMillis(), 100 * (i + 1));
+        }
+
+        assertEquals(50, state.getPendingCount());
+
+        // getAndClearPendingEvents should return all 50
+        var events = state.getAndClearPendingEvents("test");
+        assertEquals(50, events.size());
+        assertEquals(0, state.getPendingCount());
+    }
+}

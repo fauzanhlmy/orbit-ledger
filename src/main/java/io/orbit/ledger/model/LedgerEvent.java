@@ -60,10 +60,6 @@ public record LedgerEvent(
         return new LedgerEvent(key, newSequence, type, amount, timestamp, balanceAfter);
     }
 
-    public LedgerEvent withBalanceAfter(Long balance) {
-        return new LedgerEvent(key, sequence, type, amount, timestamp, balance);
-    }
-
     public long signedAmount() {
         return type == LedgerType.CREDIT ? amount : -amount;
     }

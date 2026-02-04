@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public final class LedgerRingEvent {
 
     private String key;
+    private int keyHashCode; // OPTIMIZATION: Cached to avoid recompute in shouldHandle() (v1.2.0)
     private long sequence;
     private LedgerType type;
     private long amount;
@@ -25,9 +26,10 @@ public final class LedgerRingEvent {
 
     public void set(String key, LedgerType type, long amount) {
         this.key = key;
+        this.keyHashCode = key != null ? key.hashCode() : 0; // Cache hashCode
         this.type = type;
         this.amount = amount;
-        this.timestampMs = System.currentTimeMillis();
+        this.timestampMs = System.currentTimeMillis(); // Audit-critical: capture at publish time
         this.resultFuture = null;
     }
 
@@ -43,7 +45,7 @@ public final class LedgerRingEvent {
         this.key = null;
         this.type = LedgerType.RELEASE_ALL;
         this.amount = 0;
-        this.timestampMs = System.currentTimeMillis();
+        this.timestampMs = 0;
         this.resultFuture = null;
     }
 
@@ -53,6 +55,14 @@ public final class LedgerRingEvent {
 
     public String getKey() {
         return key;
+    }
+
+    /**
+     * Returns cached hashCode of the key.
+     * OPTIMIZATION: Avoids recomputing in shouldHandle() (v1.2.0).
+     */
+    public int getKeyHashCode() {
+        return keyHashCode;
     }
 
     public long getSequence() {
@@ -88,4 +98,3 @@ public final class LedgerRingEvent {
         this.resultFuture = null;
     }
 }
-

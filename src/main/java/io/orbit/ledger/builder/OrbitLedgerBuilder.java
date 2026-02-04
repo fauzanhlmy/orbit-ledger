@@ -4,8 +4,9 @@ import io.orbit.ledger.api.BalanceLoader;
 import io.orbit.ledger.api.OrbitLedger;
 import io.orbit.ledger.api.OrbitReleaseListener;
 import io.orbit.ledger.engine.OrbitDisruptor;
-import io.orbit.ledger.enums.ReleaseType;
 import io.orbit.ledger.enums.EvictionPolicy;
+import io.orbit.ledger.enums.PerformanceMode;
+import io.orbit.ledger.enums.ReleaseType;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -30,6 +31,9 @@ public final class OrbitLedgerBuilder implements OrbitLedger.Builder {
 
     // Time-based release config (since 1.2.0)
     private Duration releaseInterval;
+
+    // Performance mode config (since 1.3.0)
+    private PerformanceMode performanceMode = PerformanceMode.STANDARD;
 
     @Override
     public OrbitLedger.Builder bufferSize(int size) {
@@ -98,6 +102,12 @@ public final class OrbitLedgerBuilder implements OrbitLedger.Builder {
     }
 
     @Override
+    public OrbitLedger.Builder performanceMode(PerformanceMode mode) {
+        this.performanceMode = Objects.requireNonNull(mode, "performanceMode must not be null");
+        return this;
+    }
+
+    @Override
     public OrbitLedger build() {
         return new OrbitDisruptor(
                 bufferSize,
@@ -108,7 +118,7 @@ public final class OrbitLedgerBuilder implements OrbitLedger.Builder {
                 balanceLoader,
                 defaultBalance,
                 evictionPolicy,
-                releaseInterval);
+                releaseInterval,
+                performanceMode);
     }
 }
-

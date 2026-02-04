@@ -1,0 +1,759 @@
+C:\Users\fauzan.abyan\.jdks\ms-17.0.15\bin\java.exe "-javaagent:C:\Users\fauzan.abyan\AppData\Local\JetBrains\IdeaIC2025.2\captureAgent\debugger-agent.jar=file:///C:/Users/FAUZAN~1.ABY/AppData/Local/Temp/capture18222094768908418327.props" -ea -Didea.test.cyclic.buffer.size=1048576 "-javaagent:C:\Users\fauzan.abyan\AppData\Local\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=56645" -Dkotlinx.coroutines.debug.enable.creation.stack.trace=false -Ddebugger.agent.enable.coroutines=true -Dkotlinx.coroutines.debug.enable.flows.stack.trace=true -Dkotlinx.coroutines.debug.enable.mutable.state.flows.stack.trace=true -Dfile.encoding=UTF-8 -classpath "C:\Users\fauzan.abyan\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.1\junit-platform-launcher-1.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\vintage\junit-vintage-engine\5.10.1\junit-vintage-engine-5.10.1.jar;C:\Users\fauzan.abyan\AppData\Local\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar;C:\Users\fauzan.abyan\AppData\Local\JetBrains\IntelliJ IDEA Community Edition 2024.3\plugins\junit\lib\junit6-rt.jar;C:\Users\fauzan.abyan\AppData\Local\JetBrains\IntelliJ IDEA Community Edition 2024.3\plugins\junit\lib\junit5-rt.jar;C:\Users\fauzan.abyan\AppData\Local\JetBrains\IntelliJ IDEA Community Edition 2024.3\plugins\junit\lib\junit-rt.jar;C:\Users\fauzan.abyan\project\fauzan\orbit-ledger\target\test-classes;C:\Users\fauzan.abyan\project\fauzan\orbit-ledger\target\classes;C:\Users\fauzan.abyan\.m2\repository\com\lmax\disruptor\4.0.0\disruptor-4.0.0.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.1\junit-jupiter-5.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.1\junit-jupiter-api-5.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\platform\junit-platform-commons\1.10.1\junit-platform-commons-1.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.1\junit-jupiter-params-5.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.1\junit-jupiter-engine-5.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\junit\platform\junit-platform-engine\1.10.1\junit-platform-engine-1.10.1.jar;C:\Users\fauzan.abyan\.m2\repository\org\mockito\mockito-core\5.7.0\mockito-core-5.7.0.jar;C:\Users\fauzan.abyan\.m2\repository\net\bytebuddy\byte-buddy\1.14.9\byte-buddy-1.14.9.jar;C:\Users\fauzan.abyan\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.9\byte-buddy-agent-1.14.9.jar;C:\Users\fauzan.abyan\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\fauzan.abyan\.m2\repository\org\mockito\mockito-junit-jupiter\5.7.0\mockito-junit-jupiter-5.7.0.jar;C:\Users\fauzan.abyan\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\fauzan.abyan\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar" com.intellij.rt.junit.JUnitStarter -ideVersion5 -junit5 io.orbit.ledger.stress.OrbitLedgerStressTest
+
+🔵 RELEASE TYPE: COUNT (threshold-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 1,000,000 | ReleaseType: COUNT
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 99,993 accounts
+
+🚀 Processing 1,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        COUNT                                      ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    1,000,000                                 ║
+║   Execution Time:      480             ms                        ║
+║   Throughput:          2,083,333       ops/sec                  ║
+║   Release Calls:       99,993                                    ║
+║   Events Released:     1,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         97              MB                        ║
+║   Heap After:          327             MB                        ║
+║   Peak Usage:          327             MB                        ║
+║   Memory Delta:        +230            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     99,993                                    ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🔵 RELEASE TYPE: COUNT (threshold-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 2,000,000 | ReleaseType: COUNT
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 2,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        COUNT                                      ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    2,000,000                                 ║
+║   Execution Time:      630             ms                        ║
+║   Throughput:          3,174,603       ops/sec                  ║
+║   Release Calls:       100,000                                   ║
+║   Events Released:     2,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         185             MB                        ║
+║   Heap After:          429             MB                        ║
+║   Peak Usage:          429             MB                        ║
+║   Memory Delta:        +244            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🔵 RELEASE TYPE: COUNT (threshold-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 3,000,000 | ReleaseType: COUNT
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 3,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        COUNT                                      ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    3,000,000                                 ║
+║   Execution Time:      682             ms                        ║
+║   Throughput:          4,398,827       ops/sec                  ║
+║   Release Calls:       100,000                                   ║
+║   Events Released:     3,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         273             MB                        ║
+║   Heap After:          741             MB                        ║
+║   Peak Usage:          741             MB                        ║
+║   Memory Delta:        +468            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🔵 RELEASE TYPE: COUNT (threshold-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 1,000,000 | ReleaseType: COUNT
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 99,993 accounts
+
+🚀 Processing 1,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        COUNT                                      ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    1,000,000                                 ║
+║   Execution Time:      375             ms                        ║
+║   Throughput:          2,666,667       ops/sec                  ║
+║   Release Calls:       99,993                                    ║
+║   Events Released:     1,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         97              MB                        ║
+║   Heap After:          397             MB                        ║
+║   Peak Usage:          397             MB                        ║
+║   Memory Delta:        +300            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     99,993                                    ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🔵 RELEASE TYPE: COUNT (threshold-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 2,000,000 | ReleaseType: COUNT
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 2,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        COUNT                                      ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    2,000,000                                 ║
+║   Execution Time:      464             ms                        ║
+║   Throughput:          4,310,345       ops/sec                  ║
+║   Release Calls:       100,000                                   ║
+║   Events Released:     2,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         185             MB                        ║
+║   Heap After:          406             MB                        ║
+║   Peak Usage:          406             MB                        ║
+║   Memory Delta:        +220            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🔵 RELEASE TYPE: COUNT (threshold-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 3,000,000 | ReleaseType: COUNT
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 3,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        COUNT                                      ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    3,000,000                                 ║
+║   Execution Time:      665             ms                        ║
+║   Throughput:          4,511,278       ops/sec                  ║
+║   Release Calls:       100,000                                   ║
+║   Events Released:     3,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         273             MB                        ║
+║   Heap After:          667             MB                        ║
+║   Peak Usage:          667             MB                        ║
+║   Memory Delta:        +393            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟠 RELEASE TYPE: HYBRID (count OR time)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 1,000,000 | ReleaseType: HYBRID | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 99,993 accounts
+
+🚀 Processing 1,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        HYBRID                                     ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    1,000,000                                 ║
+║   Execution Time:      466             ms                        ║
+║   Throughput:          2,145,923       ops/sec                  ║
+║   Release Calls:       452,414                                   ║
+║   Events Released:     1,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         97              MB                        ║
+║   Heap After:          392             MB                        ║
+║   Peak Usage:          392             MB                        ║
+║   Memory Delta:        +295            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     99,993                                    ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟠 RELEASE TYPE: HYBRID (count OR time)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 2,000,000 | ReleaseType: HYBRID | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 2,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        HYBRID                                     ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    2,000,000                                 ║
+║   Execution Time:      665             ms                        ║
+║   Throughput:          3,007,519       ops/sec                  ║
+║   Release Calls:       765,541                                   ║
+║   Events Released:     2,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         185             MB                        ║
+║   Heap After:          401             MB                        ║
+║   Peak Usage:          401             MB                        ║
+║   Memory Delta:        +216            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟠 RELEASE TYPE: HYBRID (count OR time)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 3,000,000 | ReleaseType: HYBRID | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 3,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        HYBRID                                     ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    3,000,000                                 ║
+║   Execution Time:      848             ms                        ║
+║   Throughput:          3,537,736       ops/sec                  ║
+║   Release Calls:       1,237,457                                 ║
+║   Events Released:     3,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         273             MB                        ║
+║   Heap After:          751             MB                        ║
+║   Peak Usage:          751             MB                        ║
+║   Memory Delta:        +478            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟢 RELEASE TYPE: TIME (interval-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 1,000,000 | ReleaseType: TIME | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 99,993 accounts
+
+🚀 Processing 1,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        TIME                                       ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    1,000,000                                 ║
+║   Execution Time:      400             ms                        ║
+║   Throughput:          2,500,000       ops/sec                  ║
+║   Release Calls:       468,902                                   ║
+║   Events Released:     1,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         97              MB                        ║
+║   Heap After:          365             MB                        ║
+║   Peak Usage:          365             MB                        ║
+║   Memory Delta:        +268            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     99,993                                    ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟢 RELEASE TYPE: TIME (interval-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 2,000,000 | ReleaseType: TIME | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 2,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        TIME                                       ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    2,000,000                                 ║
+║   Execution Time:      709             ms                        ║
+║   Throughput:          2,820,874       ops/sec                  ║
+║   Release Calls:       810,188                                   ║
+║   Events Released:     2,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         185             MB                        ║
+║   Heap After:          411             MB                        ║
+║   Peak Usage:          411             MB                        ║
+║   Memory Delta:        +225            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟢 RELEASE TYPE: TIME (interval-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 3,000,000 | ReleaseType: TIME | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 3,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        TIME                                       ║
+║   Performance Mode:        STANDARD                                   ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    3,000,000                                 ║
+║   Execution Time:      1,065           ms                        ║
+║   Throughput:          2,816,901       ops/sec                  ║
+║   Release Calls:       1,245,993                                 ║
+║   Events Released:     3,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         273             MB                        ║
+║   Heap After:          542             MB                        ║
+║   Peak Usage:          542             MB                        ║
+║   Memory Delta:        +268            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟢 RELEASE TYPE: TIME (interval-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 1,000,000 | ReleaseType: TIME | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 99,993 accounts
+
+🚀 Processing 1,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        TIME                                       ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    1,000,000                                 ║
+║   Execution Time:      381             ms                        ║
+║   Throughput:          2,624,672       ops/sec                  ║
+║   Release Calls:       443,677                                   ║
+║   Events Released:     1,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         97              MB                        ║
+║   Heap After:          453             MB                        ║
+║   Peak Usage:          453             MB                        ║
+║   Memory Delta:        +356            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     99,993                                    ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟢 RELEASE TYPE: TIME (interval-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 2,000,000 | ReleaseType: TIME | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 2,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        TIME                                       ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    2,000,000                                 ║
+║   Execution Time:      545             ms                        ║
+║   Throughput:          3,669,725       ops/sec                  ║
+║   Release Calls:       561,378                                   ║
+║   Events Released:     2,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         185             MB                        ║
+║   Heap After:          485             MB                        ║
+║   Peak Usage:          485             MB                        ║
+║   Memory Delta:        +300            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟢 RELEASE TYPE: TIME (interval-based)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 3,000,000 | ReleaseType: TIME | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 3,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        TIME                                       ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    3,000,000                                 ║
+║   Execution Time:      882             ms                        ║
+║   Throughput:          3,401,361       ops/sec                  ║
+║   Release Calls:       1,023,877                                 ║
+║   Events Released:     3,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         273             MB                        ║
+║   Heap After:          631             MB                        ║
+║   Peak Usage:          631             MB                        ║
+║   Memory Delta:        +357            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟠 RELEASE TYPE: HYBRID (count OR time)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 1,000,000 | ReleaseType: HYBRID | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 99,993 accounts
+
+🚀 Processing 1,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        HYBRID                                     ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    1,000,000                                 ║
+║   Execution Time:      300             ms                        ║
+║   Throughput:          3,333,333       ops/sec                  ║
+║   Release Calls:       392,234                                   ║
+║   Events Released:     1,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         97              MB                        ║
+║   Heap After:          448             MB                        ║
+║   Peak Usage:          448             MB                        ║
+║   Memory Delta:        +351            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     99,993                                    ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟠 RELEASE TYPE: HYBRID (count OR time)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 2,000,000 | ReleaseType: HYBRID | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 2,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        HYBRID                                     ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    2,000,000                                 ║
+║   Execution Time:      528             ms                        ║
+║   Throughput:          3,787,879       ops/sec                  ║
+║   Release Calls:       605,181                                   ║
+║   Events Released:     2,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         185             MB                        ║
+║   Heap After:          602             MB                        ║
+║   Peak Usage:          602             MB                        ║
+║   Memory Delta:        +416            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🟠 RELEASE TYPE: HYBRID (count OR time)
+
+══════════════════════════════════════════════════════════════════════
+  ORBIT LEDGER STRESS TEST
+  Orders: 3,000,000 | ReleaseType: HYBRID | Interval: 50ms
+══════════════════════════════════════════════════════════════════════
+
+📊 Calculating expected balances...
+   Expected balances calculated for 100,000 accounts
+
+🚀 Processing 3,000,000 orders...
+
+🔍 Validating correctness (expected vs actual)...
+
+╔══════════════════════════════════════════════════════════════════╗
+║              ORBIT LEDGER STRESS TEST REPORT                     ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CONFIGURATION                                                    ║
+║   Release Type:        HYBRID                                     ║
+║   Performance Mode:        MAXIMUM                                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║ THROUGHPUT                                                       ║
+║   Orders Processed:    3,000,000                                 ║
+║   Execution Time:      770             ms                        ║
+║   Throughput:          3,896,104       ops/sec                  ║
+║   Release Calls:       982,326                                   ║
+║   Events Released:     3,000,000                                 ║
+╠══════════════════════════════════════════════════════════════════╣
+║ MEMORY USAGE                                                     ║
+║   Heap Before:         273             MB                        ║
+║   Heap After:          494             MB                        ║
+║   Peak Usage:          494             MB                        ║
+║   Memory Delta:        +221            MB                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║ CORRECTNESS VALIDATION                                           ║
+║   Accounts Tested:     100,000                                   ║
+║   Balance Mismatches:  0                                         ║
+║   Sequence Errors:     0                                         ║
+║   Status:              ✓ ALL PASSED                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+Process finished with exit code 0

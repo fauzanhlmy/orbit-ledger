@@ -14,6 +14,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -171,51 +172,488 @@ flowchart TD
                                 <td>Multiple events are flushed together, reducing DB calls by 1000x+</td>
                             </tr>
                             <tr>
-                                <td><strong>Busy Spin</strong></td>
-                                <td>Workers spin instead of sleeping, avoiding OS context switch overhead</td>
+                                <td><strong>Wait Strategies</strong></td>
+                                <td>Adaptive: <strong>Blocking</strong> for efficiency (Standard),
+                                    <strong>Yielding</strong> for speed (Maximum)
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Benchmark Section -->
-            <section id="benchmark">
-                <h2>📊 Benchmark</h2>
+            <!-- Performance Modes Section -->
+            <!-- Performance Modes Section -->
+            <section id="performance-modes">
+                <h2>⚡ Performance Modes</h2>
+                <p>Orbit Ledger adapts to your hardware profile with two optimized performance modes:</p>
+
+                <div class="features-grid" style="grid-template-columns: repeat(2, 1fr); gap: var(--space-md);">
+                    <div class="feature-card">
+                        <h3>⚖️ STANDARD</h3>
+                        <div class="badge-container">
+                            <span class="badge"
+                                style="background: rgba(0, 210, 255, 0.1); color: #00d2ff;">Default</span>
+                        </div>
+                        <ul style="margin-top: 0; font-size: 0.9em;">
+                            <li><strong>Strategy:</strong> Thread Parking (Blocking)</li>
+                            <li><strong>CPU Usage:</strong> Low (yields when idle)</li>
+                            <li><strong>Throughput:</strong> ~2,800,000 ops/sec</li>
+                            <li><strong>Best For:</strong> General production workloads, shared cloud environments.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🚀 MAXIMUM</h3>
+                        <div class="badge-container">
+                            <span class="badge" style="background: rgba(0, 255, 157, 0.1); color: #00ff9d;">High
+                                Performance</span>
+                        </div>
+                        <ul style="margin-top: 0; font-size: 0.9em;">
+                            <li><strong>Strategy:</strong> Thread Yielding</li>
+                            <li><strong>CPU Usage:</strong> Moderate</li>
+                            <li><strong>Throughput:</strong> ~4,500,000 ops/sec</li>
+                            <li><strong>Best For:</strong> High-volume batch processing, dedicated instances.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert-box"
+                    style="background: rgba(0, 210, 255, 0.1); border-left: 4px solid #00d2ff; padding: var(--space-md); margin-top: var(--space-lg); border-radius: var(--radius-sm);">
+                    <p style="margin-bottom: var(--space-sm);"><strong>💡 Tuning Tip #1 (Buffer):</strong> Increasing
+                        the Ring Buffer size from <code>262,144</code> to <code>524,288</code> resulted in a
+                        <strong>+4-6% throughput gain</strong> in our benchmarks.
+                    </p>
+                    <p><strong>💡 Tuning Tip #2 (GC):</strong> While Orbit is virtually garbage-free, using low-latency
+                        collectors like <strong>ZGC</strong> (<code>-XX:+UseZGC</code>) or <strong>Shenandoah</strong>
+                        can further stabilize tail latency for the < 0.1% of operations that might trigger JVM
+                            housekeeping.</p>
+                </div>
+            </section>
+
+            <!-- Internal Performance Benchmark Section -->
+            <section id="benchmark-internal">
+                <h2>📊 Orbit Internal Performance</h2>
+                <p>The chart below isolates Orbit Ledger's throughput (ops/sec), demonstrating the engine's raw speed
+                    across various configurations. To ensure production-grade reliability, tests were conducted across
+                    multiple phases—including rigorous endurance runs of <strong>over 3,000,000
+                        orders</strong>—validating both long-term stability and JVM efficiency. Key performance
+                    indicators from these tests are summarized below:</p>
+
+                <div class="stats-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-xl);">
+                    <!-- Accuracy Card (Highlighted) -->
+                    <div class="stat-card"
+                        style="background: linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(0, 255, 157, 0.05)); padding: var(--space-lg); border-radius: var(--radius-md); border: 1px solid rgba(0, 255, 157, 0.3); text-align: center; grid-column: span 2;">
+                        <div
+                            style="font-size: 2.5em; font-weight: 800; color: var(--success); text-shadow: 0 0 20px rgba(0, 255, 157, 0.3);">
+                            100%</div>
+                        <div style="font-size: 1em; font-weight: 600; color: var(--text-light); letter-spacing: 0.5px;">
+                            ACCURACY</div>
+                        <div style="font-size: 0.85em; color: var(--text-muted); margin-top: 4px;">Zero Missing Balances
+                        </div>
+                    </div>
+
+                    <!-- Test Volume -->
+                    <div class="stat-card"
+                        style="background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 1.8em; font-weight: 700; color: #ff9f00;">~3M</div>
+                        <div style="font-size: 0.85em; color: var(--text-muted);">Orders Processed</div>
+                    </div>
+
+                    <!-- Unique Accounts -->
+                    <div class="stat-card"
+                        style="background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 1.8em; font-weight: 700; color: #00d2ff;">100k</div>
+                        <div style="font-size: 0.85em; color: var(--text-muted);">Unique Accounts</div>
+                    </div>
+
+                    <!-- Concurrency Errors -->
+                    <div class="stat-card"
+                        style="background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 1.8em; font-weight: 700; color: var(--success);">0</div>
+                        <div style="font-size: 0.85em; color: var(--text-muted);">Concurrency Errors</div>
+                    </div>
+
+                    <!-- Heap Usage -->
+                    <div class="stat-card"
+                        style="background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <div style="font-size: 1.8em; font-weight: 700; color: #ff00ea;">~760MB</div>
+                        <div style="font-size: 0.85em; color: var(--text-muted);">Peak Heap</div>
+                    </div>
+                </div>
+
+                <div class="chart-container"
+                    style="position: relative; height:400px; width:100%; margin: var(--space-xl) 0; background: var(--bg-card); padding: var(--space-lg); border-radius: var(--radius-lg); border: 1px solid var(--border);">
+                    <canvas id="benchmarkChart"></canvas>
+                </div>
+
+                <!-- Detailed Benchmark Data Accordion -->
+                <details class="benchmark-accordion">
+                    <summary>View Detailed Performance Data</summary>
+                    <div class="benchmark-tables">
+                        <h3>1. Order Volume: 1,000,000 Orders (Warm-up Phase)</h3>
+                        <p style="margin-bottom: var(--space-sm); font-size: 0.9em;"><em>JVM optimization in
+                                progress.</em></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Perf. Mode</th>
+                                    <th>Release Type</th>
+                                    <th>Buffer Size</th>
+                                    <th>Throughput</th>
+                                    <th>Heap (Peak)</th>
+                                    <th>Mem Delta</th>
+                                    <th>Correctness</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>COUNT</td>
+                                    <td>524k</td>
+                                    <td>2.08M ops/sec</td>
+                                    <td>327 MB</td>
+                                    <td>+230 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>TIME</td>
+                                    <td>524k</td>
+                                    <td>2.50M ops/sec</td>
+                                    <td>365 MB</td>
+                                    <td>+268 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>HYBRID</td>
+                                    <td>524k</td>
+                                    <td>2.15M ops/sec</td>
+                                    <td>392 MB</td>
+                                    <td>+295 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>COUNT</td>
+                                    <td>524k</td>
+                                    <td>2.67M ops/sec</td>
+                                    <td>397 MB</td>
+                                    <td>+300 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>TIME</td>
+                                    <td>524k</td>
+                                    <td>2.62M ops/sec</td>
+                                    <td>453 MB</td>
+                                    <td>+356 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>HYBRID</td>
+                                    <td>524k</td>
+                                    <td>3.33M ops/sec</td>
+                                    <td>448 MB</td>
+                                    <td>+351 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>2. Order Volume: 2,000,000 Orders (Steady State)</h3>
+                        <p style="margin-bottom: var(--space-sm); font-size: 0.9em;"><em>Peak Performance.</em></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Perf. Mode</th>
+                                    <th>Release Type</th>
+                                    <th>Buffer Size</th>
+                                    <th>Throughput</th>
+                                    <th>Heap (Peak)</th>
+                                    <th>Mem Delta</th>
+                                    <th>Correctness</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>COUNT</td>
+                                    <td>524k</td>
+                                    <td>3.17M ops/sec</td>
+                                    <td>429 MB</td>
+                                    <td>+244 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>TIME</td>
+                                    <td>524k</td>
+                                    <td>2.82M ops/sec</td>
+                                    <td>411 MB</td>
+                                    <td>+225 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>HYBRID</td>
+                                    <td>524k</td>
+                                    <td>3.01M ops/sec</td>
+                                    <td>401 MB</td>
+                                    <td>+216 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>COUNT</td>
+                                    <td>524k</td>
+                                    <td>4.31M ops/sec</td>
+                                    <td>406 MB</td>
+                                    <td>+220 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>TIME</td>
+                                    <td>524k</td>
+                                    <td>3.67M ops/sec</td>
+                                    <td>485 MB</td>
+                                    <td>+300 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>HYBRID</td>
+                                    <td>524k</td>
+                                    <td>3.79M ops/sec</td>
+                                    <td>602 MB</td>
+                                    <td>+416 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>3. Order Volume: 3,000,000 Orders (Endurance)</h3>
+                        <p style="margin-bottom: var(--space-sm); font-size: 0.9em;"><em>Sustained throughput.</em></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Perf. Mode</th>
+                                    <th>Release Type</th>
+                                    <th>Buffer Size</th>
+                                    <th>Throughput</th>
+                                    <th>Heap (Peak)</th>
+                                    <th>Mem Delta</th>
+                                    <th>Correctness</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>COUNT</td>
+                                    <td>524k</td>
+                                    <td>4.40M ops/sec</td>
+                                    <td>741 MB</td>
+                                    <td>+468 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>TIME</td>
+                                    <td>524k</td>
+                                    <td>2.82M ops/sec</td>
+                                    <td>542 MB</td>
+                                    <td>+268 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>STANDARD</td>
+                                    <td>HYBRID</td>
+                                    <td>524k</td>
+                                    <td>3.54M ops/sec</td>
+                                    <td>751 MB</td>
+                                    <td>+478 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>COUNT</td>
+                                    <td>524k</td>
+                                    <td>4.51M ops/sec</td>
+                                    <td>667 MB</td>
+                                    <td>+393 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>TIME</td>
+                                    <td>524k</td>
+                                    <td>3.40M ops/sec</td>
+                                    <td>631 MB</td>
+                                    <td>+357 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                                <tr>
+                                    <td>MAXIMUM</td>
+                                    <td>HYBRID</td>
+                                    <td>524k</td>
+                                    <td>3.90M ops/sec</td>
+                                    <td>494 MB</td>
+                                    <td>+221 MB</td>
+                                    <td>✅ PASS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const ctx = document.getElementById('benchmarkChart').getContext('2d');
+
+                        // Gradient for Maximum
+                        const gradientMax = ctx.createLinearGradient(0, 0, 0, 400);
+                        gradientMax.addColorStop(0, 'rgba(0, 255, 157, 0.8)');
+                        gradientMax.addColorStop(1, 'rgba(0, 255, 157, 0.2)');
+
+                        // Gradient for Standard
+                        const gradientStandard = ctx.createLinearGradient(0, 0, 0, 400);
+                        gradientStandard.addColorStop(0, 'rgba(0, 210, 255, 0.8)');
+                        gradientStandard.addColorStop(1, 'rgba(0, 210, 255, 0.2)');
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['1M Orders (Warm-up)', '2M Orders (Peak)', '3M Orders (Endurance)'],
+                                datasets: [
+                                    {
+                                        label: 'Standard Mode',
+                                        data: [2083333, 3174603, 4398827],
+                                        backgroundColor: gradientStandard,
+                                        borderColor: '#00d2ff',
+                                        borderWidth: 2,
+                                        borderRadius: 6,
+                                        barPercentage: 0.7,
+                                        categoryPercentage: 0.8
+                                    },
+                                    {
+                                        label: 'Maximum Mode',
+                                        data: [2666667, 4310345, 4511278],
+                                        backgroundColor: gradientMax,
+                                        borderColor: '#00ff9d',
+                                        borderWidth: 2,
+                                        borderRadius: 6,
+                                        barPercentage: 0.7,
+                                        categoryPercentage: 0.8
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                interaction: {
+                                    mode: 'index',
+                                    intersect: false,
+                                },
+                                plugins: {
+                                    legend: {
+                                        labels: {
+                                            color: '#e0e0e0',
+                                            font: { family: 'Inter', size: 14 }
+                                        }
+                                    },
+                                    tooltip: {
+                                        backgroundColor: 'rgba(20, 20, 20, 0.95)',
+                                        titleFont: { family: 'Inter', size: 14 },
+                                        bodyFont: { family: 'JetBrains Mono', size: 13 },
+                                        padding: 14,
+                                        borderColor: 'rgba(255,255,255,0.1)',
+                                        borderWidth: 1,
+                                        callbacks: {
+                                            label: function (context) {
+                                                let label = context.dataset.label || '';
+                                                if (label) {
+                                                    label += ': ';
+                                                }
+                                                if (context.parsed.y !== null) {
+                                                    label += new Intl.NumberFormat('en-US').format(context.parsed.y) + ' ops/sec';
+                                                }
+                                                return label;
+                                            }
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: 'rgba(255, 255, 255, 0.05)',
+                                            borderColor: 'rgba(255, 255, 255, 0.1)'
+                                        },
+                                        ticks: {
+                                            color: '#a0a0a0',
+                                            font: { family: 'JetBrains Mono' },
+                                            callback: function (value) {
+                                                return value / 1000000 + 'M';
+                                            }
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        },
+                                        ticks: {
+                                            color: '#e0e0e0',
+                                            font: { family: 'Inter', weight: '600' }
+                                        }
+                                    }
+                                },
+                                animation: {
+                                    duration: 2000,
+                                    easing: 'easeOutQuart'
+                                }
+                            }
+                        });
+                    });
+                </script>
+            </section>
+
+            <!-- Comparison Section -->
+            <section id="benchmark-comparison">
+                <h2>🆚 Comparison: Orbit vs Traditional DB</h2>
+                <p>This table highlights the fundamental architectural differences that allow Orbit Ledger to achieve
+                    500x-600x greater throughput than traditional RDBMS approaches.</p>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
                                 <th>Metric</th>
-                                <th>Traditional DB</th>
-                                <th>Orbit (1 worker)</th>
-                                <th>Orbit (4 workers)</th>
+                                <th>Traditional DB (Postgres/MySQL)</th>
+                                <th>Orbit Ledger (Standard)</th>
+                                <th>Orbit Ledger (Maximum)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Throughput</strong></td>
-                                <td>~10K ops/sec</td>
-                                <td style="color: var(--success);">&gt;1M ops/sec</td>
-                                <td style="color: var(--success);">&gt;3M ops/sec</td>
+                                <td><strong>Max Throughput</strong></td>
+                                <td>~2,000 - 5,000 ops/sec</td>
+                                <td style="color: var(--success);">~2,800,000 ops/sec</td>
+                                <td style="color: var(--success);">~4,500,000 ops/sec</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scale Factor</strong></td>
+                                <td>1x</td>
+                                <td style="color: var(--success);">~1000x</td>
+                                <td style="color: var(--success);">~2000x</td>
                             </tr>
                             <tr>
                                 <td><strong>Latency (p99)</strong></td>
-                                <td>10-100ms</td>
+                                <td>10-50ms</td>
                                 <td style="color: var(--success);">&lt;1μs</td>
                                 <td style="color: var(--success);">&lt;1μs</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Lock Contention</strong></td>
-                                <td>High</td>
-                                <td style="color: var(--success);">None</td>
-                                <td style="color: var(--success);">None</td>
-                            </tr>
-                            <tr>
-                                <td><strong>GC Pressure</strong></td>
-                                <td>High</td>
-                                <td style="color: var(--success);">Zero</td>
-                                <td style="color: var(--success);">Zero</td>
                             </tr>
                         </tbody>
                     </table>
@@ -237,13 +675,13 @@ sequenceDiagram
     Note over T1, T2: Both update Account A
     T1->>DB: BEGIN TX & LOCK
     activate DB
-    Note right of DB: ðŸ”’ Locked
+    Note right of DB: ❌ Locked
     T2->>DB: BEGIN TX & LOCK
-    Note right of T2: â³ BLOCKED
+    Note right of T2: ❌  BLOCKED
     T1->>DB: UPDATE Balance
     T1->>DB: COMMIT
     deactivate DB
-    Note right of DB: ðŸ”“ Released
+    Note right of DB: ✅ Released
     T2->>DB: Acquired Lock
     activate DB
     T2->>DB: UPDATE Balance
@@ -369,10 +807,11 @@ sequenceDiagram
                         </p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3>Efficient CPU (Busy Spin)</h3>
-                        <p>Orbit uses "Busy Spin" wait strategies. While this looks like 100% core usage, it avoids
-                            expensive OS context switching — burning CPU cycles to save nanoseconds.</p>
+                        <div class="feature-icon">🧠</div>
+                        <h3>Smart Threading</h3>
+                        <p>Orbit adapts its wait strategy based on load. It uses <strong>Thread Yielding</strong> or
+                            <strong>Parking</strong> to minimize latency without needlessly burning 100% CPU when idle.
+                        </p>
                     </div>
                 </div>
             </section>
